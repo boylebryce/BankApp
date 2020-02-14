@@ -6,10 +6,7 @@ Table of Contents
   * [Revision History](#revision-history)
   * [Introduction](#1-introduction)
     * 1.1 [Purpose](#11-purpose)
-    * 1.2 [Document Conventions](#12-document-conventions)
-    * 1.3 [Intended Audience and Reading Suggestions](#13-intended-audience-and-reading-suggestions)
-    * 1.4 [Product Scope](#14-product-scope)
-    * 1.5 [References](#15-references)
+    * 1.2 [Product Scope](#14-product-scope)
   * [Overall Description](#overall-description)
     * 2.1 [Product Perspective](#21-product-perspective)
     * 2.2 [Product Functions](#22-product-functions)
@@ -28,14 +25,7 @@ Table of Contents
     * 4.2 [System Feature 2 (and so on)](#42-system-feature-2-and-so-on)
   * [Other Nonfunctional Requirements](#other-nonfunctional-requirements)
     * 5.1 [Performance Requirements](#51-performance-requirements)
-    * 5.2 [Safety Requirements](#52-safety-requirements)
-    * 5.3 [Security Requirements](#53-security-requirements)
-    * 5.4 [Software Quality Attributes](#54-software-quality-attributes)
-    * 5.5 [Business Rules](#55-business-rules)
-  * [Other Requirements](#other-requirements)
-* [Appendix A: Glossary](#appendix-a-glossary)
-* [Appendix B: Analysis Models](#appendix-b-analysis-models)
-* [Appendix C: To Be Determined List](#appendix-c-to-be-determined-list)
+   
 
 
 
@@ -49,26 +39,24 @@ Table of Contents
 
 ## 1. Introduction
 ### 1.1 Purpose 
-Identify the product whose software requirements are specified in this document, including the revision or release number. Describe the scope of the product that is covered by this SRS, particularly if this SRS describes only part of the system or a single subsystem.
-
-### 1.2 Document Conventions
-Describe any standards or typographical conventions that were followed when writing this SRS, such as fonts or highlighting that have special significance. For example, state whether priorities  for higher-level requirements are assumed to be inherited by detailed requirements, or whether every requirement statement is to have its own priority.
-### 1.3 Intended Audience and Reading Suggestions
-Describe the different types of reader that the document is intended for, such as developers, project managers, marketing staff, users, testers, and documentation writers. Describe what the rest of this SRS contains and how it is organized. Suggest a sequence for reading the document, beginning with the overview sections and proceeding through the sections that are most pertinent to each reader type.
-### 1.4 Product Scope
-Provide a short description of the software being specified and its purpose, including relevant benefits, objectives, and goals. Relate the software to corporate goals or business strategies. If a separate vision and scope document is available, refer to it rather than duplicating its contents here.
-### 1.5 References
-List any other documents or Web addresses to which this SRS refers. These may include user interface style guides, contracts, standards, system requirements specifications, use case documents, or a vision and scope document. Provide enough information so that the reader could access a copy of each reference, including title, author, version number, date, and source or location.
+This Bank System creates a functional interface for managing personal finances through a bank's offered products.   
+### 1.2 Product Scope
+The Bank's objective is to create an accurate stimulation of a real world Bank system with its roles of operations being close to today's well known banks that offer checking, savings and credit card accounts. 
 
 ## Overall Description
 ### 2.1 Product Perspective
-Describe the context and origin of the product being specified in this SRS. For example, state whether this product is a follow-on member of a product family, a replacement for certain existing systems, or a new, self-contained product. If the SRS defines a component of a larger system, relate the requirements of the larger system to the functionality of this software and identify interfaces between the two. A simple diagram that shows the major components of the overall system, subsystem interconnections, and external interfaces can be helpful.
+This is a project for our Software Engineering course- spring 2020, created to practice and demonstrate our OOP solution to a SWE problem. Bank System is a distributed system with a large DB of customers' and accounts' informations.
 ### 2.2 Product Functions
-Summarize the major functions the product must perform or must let the user perform. Details will be provided in Section 3, so only a high level summary (such as a bullet list) is needed here. Organize the functions to make them understandable to any reader of the SRS. A picture of the major groups of related requirements and how they relate, such as a top level data flow diagram or object class diagram, is often effective.
+A user can perform all the well-known operations of a real life bank. Account owners can interact with their accounts through an ATM or at a bank branch with the help of a teller to modify their account. New customers can become account holders by visiting a bank branch. 
 ### 2.3 User Classes and Characteristics
-Identify the various user classes that you anticipate will use this product. User classes may be differentiated based on frequency of use, subset of product functions used, technical expertise, security or privilege levels, educational level, or experience. Describe the pertinent characteristics of each user class. Certain requirements may pertain only to certain user classes. Distinguish the most important user classes for this product from those who are less important to satisfy.
+Users can be either customers or to-be-customers. Customers will be given a virtual card, a card without a strip number but with a chip number, upon opening a new account. The card allows interactions with the account through an ATM. Without the card, customers can get access to their account through bank branches. 
 ### 2.4 Operating Environment
 Describe the environment in which the software will operate, including the hardware platform, operating system and versions, and any other software components or applications with which it must peacefully coexist.
+
+
+
+
+
 ### 2.5 Design and Implementation Constraints
 Describe any items or issues that will limit the options available to the developers. These might include: corporate or regulatory policies; hardware limitations (timing requirements, memory requirements); interfaces to other applications; specific technologies, tools, and databases to be used; parallel operations; language requirements; communications protocols; security considerations; design conventions or programming standards (for example, if the customer’s organization will be responsible for maintaining the delivered software).
 ### 2.6 User Documentation
@@ -97,25 +85,10 @@ Don’t really say “System Feature 1.” State the feature name in just a few 
  
  Each requirement should be uniquely identified with a sequence number or a meaningful tag of some kind.
 
-### 4.2 System Feature 2 (and so on)
-
+## 4. Legal, Copyright and Other Notices
+  NA
 ## Other Nonfunctional Requirements
-### 5.1 Performance Requirements
-If there are performance requirements for the product under various circumstances, state them here and explain their rationale, to help the developers understand the intent and make suitable design choices. Specify the timing relationships for real time systems. Make such requirements as specific as possible. You may need to state performance requirements for individual functional requirements or features.
-### 5.2 Safety Requirements
-Specify those requirements that are concerned with possible loss, damage, or harm that could result from the use of the product. Define any safeguards or actions that must be taken, as well as actions that must be prevented. Refer to any external policies or regulations that state safety issues that affect the product’s design or use. Define any safety certifications that must be satisfied.
-### 5.3 Security Requirements
-Specify any requirements regarding security or privacy issues surrounding use of the product or protection of the data used or created by the product. Define any user identity authentication requirements. Refer to any external policies or regulations containing security issues that affect the product. Define any security or privacy certifications that must be satisfied.
-### 5.4 Software Quality Attributes
-Specify any additional quality characteristics for the product that will be important to either the customers or the developers. Some to consider are: adaptability, availability, correctness, flexibility, interoperability, maintainability, portability, reliability, reusability, robustness, testability, and usability. Write these to be specific, quantitative, and verifiable when possible. At the least, clarify the relative preferences for various attributes, such as ease of use over ease of learning.
-### 5.5 Business Rules
-List any operating principles about the product, such as which individuals or roles can perform which functions under specific circumstances. These are not functional requirements in themselves, but they may imply certain functional requirements to enforce the rules.
+### 5 systema architecture 
+  NA
 
-## Other Requirements
-Define any other requirements not covered elsewhere in the SRS. This might include database requirements, internationalization requirements, legal requirements, reuse objectives for the project, and so on. Add any new sections that are pertinent to the project.
-### Appendix A: Glossary
-Define all the terms necessary to properly interpret the SRS, including acronyms and abbreviations. You may wish to build a separate glossary that spans multiple projects or the entire organization, and just include terms specific to a single project in each SRS.
-### Appendix B: Analysis Models
-Optionally, include any pertinent analysis models, such as data flow diagrams, class diagrams, state-transition diagrams, or entity-relationship diagrams.
-### Appendix C: To Be Determined List
-Collect a numbered list of the TBD (to be determined) references that remain in the SRS so they can be tracked to closure.
+## 6 Supporting info
