@@ -23,7 +23,7 @@ Can alert the bank about maintenance needs
 Ink, paper, cash balance
 Can alert the authorities and bank about any break ins
 Can alert the fraud department about suspicious activities 
-When a wrong pin is entered more than 3 times
+When a wrong pin is entered once
 Can generate receipts 
 Can take photos of the customers with every transaction
 Knows its status, idle, with customer, or in transaction 
