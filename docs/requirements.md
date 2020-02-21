@@ -12,13 +12,18 @@ Table of Contents
     * 1.5 [Overview](#15-overview)
   * [Overall description](#2-overall-description)
     * 2.1 [Product perspective](#21-product-perspective)
-    * 2.2 [Product functions](#22-product-functions)
-    * 2.3 [User characteristics](#23-user-characteristics)
+    * 2.2 [Product Architecture](#22-product-architecture)
+    * 2.3 [Product Features](#23-product-features)
+    * 2.4 [Constraints](#24-constraints)
+    * 2.5 [Assumptions and Dependancies](#25-assumptions)
   * [Specific requirements](#3-specific-requirements) 
-    * 3.1 [User Requirements](#31-user-requirements)
-    * 3.2 [System Architecture](#32-system-architecture)
-    * 3.3 [System Requirements](#33-system-requirements)
+    * 3.1 [Functional Requirements](#31-functional-requirements)
+    * 3.2 [External Interface Requirement](#32-external-interface-requirement)
+    * 3.3 [Internal Interface Requirement](#33-internal-interface-requirements)
   * [Legal, Copyright and Other Notices](#4-legal-copyright-and-other-notices)
+    * 4.1 [Secity and Privacy Requirements](#41-Security-and-privacy-requirements)
+    * 4.2 [Environmental Requirements](#42-environmental-requirements)
+    * 4.3 [Performance Requirements](#43-performance-requirements)
 
 
 
@@ -31,7 +36,7 @@ Table of Contents
 
 ## 1. Introduction
 ### 1.1 Purpose 
-This Bank System creates a functional interface for managing personal finances through a bank's offered products.   
+This document outlines the requirements for the Bank System, a functional interface for managing personal finances by using the offered products.   
 ### 1.2 Product Scope
 The Bank's objective is to create an accurate stimulation of a real world Bank system with its roles of operations being close to today's well known banks that offer checking, savings and credit card accounts. 
 ### 1.3 Definitions acronyms
@@ -52,7 +57,6 @@ The software is a distributed software that will operate over a network.
 
 
 ## 4. Legal, Copyright and Other Notices
-
-## 5 systema architecture 
-
-## 6 Supporting info
+### 4.1 Security and privacy requirements
+### 4.2 Environmental requirements
+### 4.3 Performance requirements
