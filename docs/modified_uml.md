@@ -93,7 +93,7 @@ Constains info about
 * Card number used to make the transaction
 * Type of transaction it is(deposit cash/check, withdraw cash, check account balance)
 * Location of transaction
-* Amount of money deposited
+* Amount of money deposited/withdrawn
 * Photo of the check
 * Photo of the person 
 
