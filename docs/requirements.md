@@ -40,6 +40,8 @@ This document outlines the requirements for the Bank System, a functional interf
 ### 1.2 Product Scope
 The Bank's objective is to create an accurate stimulation of a real world Bank system with its roles of operations being close to today's well known banks that offer checking, savings and credit card accounts. 
 ### 1.3 Definitions acronyms
+ATM- Automated Teller Machine
+
 
 ### 1.4 References
 
@@ -57,6 +59,21 @@ The software is a distributed software that will operate over a network.
 
 
 ## 4. Legal, Copyright and Other Notices
-### 4.1 Security and privacy requirements
+Each bank entity will supply their own legal and insurance policies. This software will not reflect the 
+rights and views of the companies that purchase this banking software.
+All sales are final, and the transfer of legal reprecussions are transfer with the completion the sale of this
+software to an entity. Also, while testing the software- if you break it, you buy it.
+Each entity is required to insure bbank accounts to a predetermined amount, but the creaters of this software
+will not be held accountable for that. 
+### 4.1 Security and privacy requirements:
+The bank entities are entitled to use this software as a bank system managment tool. 
+We reserve the right to occasionally back door into a bank system and sell of user data
+at market values. 
 ### 4.2 Environmental requirements
+Our commitment to the environment requies that for every ATM that is created, a tree must be planted 
+within a one mile proximity to the bank branch attached to the corporate bank entity. 
 ### 4.3 Performance requirements
+Network required, but not included. 
+The must have Java 8 or later on server machines. 
+For optimal usesage accquire state of the art Mac Pro machines from apple, inc. A raspberry pi would suffice for
+accessing date- not for managing it. 
