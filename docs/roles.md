@@ -10,7 +10,8 @@
 |    Fatemeh    |             | Create proj requirements PHASE2 |     YES     |
 |      Chad     |   2/21/20   | Create Gantt chart PHASE 2      |     YES     |
 |    Fatemeh    |             |  Create Use cases PHASE 2       |     YES     |
-|    Andrew     |   2/21/20   | Finalize UML chart PHASE 2      |             |
+|    Andrew     |   2/21/20   | Finalize UML chart PHASE 2      |     YES     |
 |       ?       |             | Finalize Roles doc PHASE 2      |             |
 |Andrew/Fatemeh |   2/21/20   | Finalize proj docs PHASE 2      |             |
-|    Andrew     |             |    Use case flow chart          |             |
+|      Andrew   |             |    Use case flow chart          |   In work   |
+
