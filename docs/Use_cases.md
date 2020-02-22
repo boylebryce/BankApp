@@ -45,8 +45,10 @@ Use Case ID: {This should be coded to identify the level of the use case}
 Use Case Name: Customers goes to the ATM to deposit cash 
 Relevant Requirements: Customer must have their card number and correct pin number
 Primary Actor: customer initiates use
-Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has to be functional and in idle state 
-Post-conditions: The added cash amount gets relflected to their account balance. ATM stores the cash and increases the total value of deposits it has recieved. 
+Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has
+to be functional and in idle state 
+Post-conditions: The added cash amount gets relflected to their account balance. ATM stores the cash and increases the
+total value of deposits it has recieved. 
 Basic Flow or Main Scenario: 
 	flow of events: 
 	1 The user initiates an action by giving card number and pin nunmber to an ATM 
@@ -70,13 +72,14 @@ Extensions or Alternate Flows: A variation on this use case is:
 Exceptions: Error could happen if customer's card number is not linked to any accounts or if person is not a cutomer of the bank.
 Related Use Cases: NA
 
-
 Use Case ID: {This should be coded to identify the level of the use case}
 Use Case Name: Customers goes to the ATM to deposit check 
 Relevant Requirements: Customer must have their card number and correct pin number
 Primary Actor: customer initiates use
-Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has to be functional and in idle state 
-Post-conditions: The cash amount of check gets relflected to their account balance after check is validated in 2 busines days. ATM stores the check and increases the total number of check deposits it has recieved. 
+Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has
+to be functional and in idle state 
+Post-conditions: The cash amount of check gets relflected to their account balance after check is validated in 2 busines
+days. ATM stores the check and increases the total number of check deposits it has recieved. 
 Basic Flow or Main Scenario: 
 	flow of events: 
 	1 The user initiates an action by giving card number and pin nunmber to an ATM 
@@ -108,7 +111,8 @@ Use Case ID: {This should be coded to identify the level of the use case}
 Use Case Name: Customers goes to the ATM to check account balance 
 Relevant Requirements: Customer must have their card number and correct pin number
 Primary Actor: customer initiates use
-Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has to be functional and in idle state 
+Pre-conditions: Customer must have a valid account and valid card to be able to perform this action at the ATM. ATM has
+to be functional and in idle state 
 Post-conditions: No changes to the system 
 Basic Flow or Main Scenario: 
 	flow of events: 
@@ -120,8 +124,10 @@ Basic Flow or Main Scenario:
 	5 ATM generates a transaction object that summarizes the events and includes the captures photo of cutomer.
 	6 New transaction gets stored in the bank dataset.
 	7 ATM updates its status to "idle"
-Extensions or Alternate Flows: If authentication fails, ATM generates an alert about account being accessed by unauthorized user
+Extensions or Alternate Flows: If authentication fails, ATM generates an alert about account being accessed by
+unauthorized user
 	 Alerts recieves the ATM generated alert and takes the approperiate actions to lock the account
 	 ATM displays a descriptive message to let the cutomer know access is denied
-Exceptions: Error could happen if customer's card number is not linked to any accounts or if person is not a cutomer of the bank.
+Exceptions: Error could happen if customer's card number is not linked to any accounts or if person is not a cutomer of
+the bank.
 Related Use Cases: NA
