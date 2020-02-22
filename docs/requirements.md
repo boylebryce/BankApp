@@ -36,12 +36,16 @@ Table of Contents
 
 ## 1. Introduction
 ### 1.1 Purpose 
-This document outlines the requirements for the Bank System, a functional interface for managing personal finances by using the offered products.   
+This document outlines the requirements for the Bank System, a functional interface for managing personal finances by using the offered products of Spotlight Financial Holdings.   
 ### 1.2 Product Scope
-The Bank's objective is to create an accurate stimulation of a real world Bank system with its roles of operations being close to today's well known banks that offer checking, savings and credit card accounts. 
+This document will catalog the user, system, and hardware requirements for the Bank system. It will not, however, document how these requirements will be implemented specifically. 
 ### 1.3 Definitions acronyms
-
+SFH stands for the name of the Bank, Spotlight Financial Holdings.
+ATM describes a machine that is located on the premise of a branch.
+Branch describes a physical location of SFH bank.
 ### 1.4 References
+Use Case Specification Document [docs/use_cases.md](docs/use_cases.md).
+UML Use Case Diagrams Document [docs/BankApp UML.jpg](docs/BankApp_UML.jpg).
 
 ### 1.5 Overview
 

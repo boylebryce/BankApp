@@ -26,6 +26,8 @@ Can generate receipts - summary of transactions
 Can sommunicate to the bank to immediately reflect changes to the customer's account
 Can report account balance
 Can generate a random transaction number
+Knows the number of checks it has recieved 
+Knows the total amount of deposited cash by customers
 
 ### ATM:
 Can accept transactions 
@@ -40,6 +42,7 @@ When a wrong pin is entered once
 Can take photos of the customers with every transaction
 Knows its status, idle, with customer, or in transaction 
 
+
 ### Bank Branch:
 Has an adddress
 Has a name
@@ -50,6 +53,7 @@ Can decide when to shut down ATMs
 Can close an account when fraud department flags the account more than a number of times
 Define ATM threshold for max daily amount taken out
 Can alert authorities about bank(branch) robbery attempt
+Collects the deposited cash in the ATMs at the end of each day
 
 ### Fraud department:
 Can decide if a check from ATM or branch is fake and decline the updates to the account
