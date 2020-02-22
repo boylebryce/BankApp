@@ -2,7 +2,6 @@
 ## For Software Engineering Project- Bank App
 
 Table of Contents
-=================
   * [Revision History](#revision-history)
   * [Introduction](#1-introduction)
     * 1.1 [Purpose](#11-purpose)
@@ -25,8 +24,6 @@ Table of Contents
     * 4.2 [Environmental Requirements](#42-environmental-requirements)
     * 4.3 [Performance Requirements](#43-performance-requirements)
 
-
-
 ## Revision History
 | Name | Date    | Reason For Changes  | Version   |
 | ---- | ------- | ------------------- | --------- |
@@ -40,18 +37,14 @@ This document outlines the requirements for the Bank System, a functional interf
 ### 1.2 Product Scope
 This document will catalog the user, system, and hardware requirements for the Bank system. It will not, however, document how these requirements will be implemented specifically. 
 ### 1.3 Definitions acronyms
-<<<<<<< HEAD
 SFH stands for the name of the Bank, Spotlight Financial Holdings.
 ATM describes a machine that is located on the premise of a branch.
 Branch describes a physical location of SFH bank.
-=======
 ATM- Automated Teller Machine
 
-
->>>>>>> 6616bc3f12a6b48f212bf3a6b0b79b866767e33e
 ### 1.4 References
-Use Case Specification Document [docs/use_cases.md](docs/use_cases.md).
-UML Use Case Diagrams Document [docs/BankApp UML.jpg](docs/BankApp_UML.jpg).
+Use Case Specification Document [docs/use_cases.md](https://github.com/Ing-Ram/BankApp/blob/master/docs/Use_cases.md).
+UML Use Case Diagrams Document [docs/BankApp UML.jpg](https://github.com/Ing-Ram/BankApp/blob/master/docs/BankApp%20UML.jpg)
 
 ### 1.5 Overview
 
