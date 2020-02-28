@@ -13,5 +13,5 @@
 |    Andrew     |   2/21/20   | Finalize UML chart PHASE 2      |     YES     |
 |       ?       |             | Finalize Roles doc PHASE 2      |             |
 |Andrew/Fatemeh |   2/21/20   | Finalize proj docs PHASE 2      |     YES     |
-|      Andrew   |             |    Use case flow chart          |   In work   |
+|      Andrew   |             |    Use case flow chart          |     YES     |
 
