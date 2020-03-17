@@ -10,4 +10,5 @@ Spotlight Financial Holdings is a bank that offers savings, checkings, and credi
 Customers recieve virtual cards for their accounts which has a chip number, an expiration date, and a card number. The ATMs are equipped with technology to read chip cards and all virtual cards provided to customers.
 
 
-collaborators: Chad, Andrew, Fatemeh
+Old team: Chad, Andrew, Fatemeh
+New team: Bryce, Alma, Joel
