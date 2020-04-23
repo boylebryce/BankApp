@@ -1,3 +1,5 @@
+package com.company;
+
 import java.util.Date;
 
 public class Transaction {
@@ -21,3 +23,4 @@ public class Transaction {
         Deposit,
         Withdraw;
     }
+}

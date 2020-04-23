@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 
 public class AccountTest {
 
+    com.company.Account testAccount;
+
     @Before
     public void setUp() throws Exception {
     }
@@ -32,5 +34,49 @@ public class AccountTest {
 
     @Test
     public void addToTransactions() {
+    }
+
+    @Test
+    public void getAccountId() {
+    }
+
+    @Test
+    public void getName() {
+    }
+
+    @Test
+    public void getSavingAmount() {
+    }
+
+    @Test
+    public void getCheckingAmount() {
+    }
+
+    @Test
+    public void getCards() {
+    }
+
+    @Test
+    public void isLocked() {
+    }
+
+    @Test
+    public void setSavingAmount() {
+    }
+
+    @Test
+    public void setCheckingAmount() {
+    }
+
+    @Test
+    public void addCard() {
+    }
+
+    @Test
+    public void setLocked() {
+    }
+
+    @Test
+    public void removeCard() {
     }
 }
