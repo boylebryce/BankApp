@@ -1,5 +1,8 @@
+package com.company;
+
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 public class Account {
     private final IBank bank;
