@@ -25,6 +25,6 @@ public class TestCase01 {
 
     @Test
     public void accessATMWithValidCredentials() {
-        assertEquals(ATM.successfulValidation(), testCustomer.goToATM(testATM);)
+        assertEquals(ATM.successfulValidation(), testCustomer.goToATM(testATM));
     }
 }
