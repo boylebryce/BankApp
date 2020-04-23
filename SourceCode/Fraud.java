@@ -1,3 +1,5 @@
+package com.company;
+
 public class Fraud {
     private void flagAccount() {
 
