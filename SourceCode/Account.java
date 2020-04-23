@@ -1,37 +1,71 @@
 package com.company;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 public class Account {
-    private int accountNumber;
-    private String accountType;
-    private boolean flag;
-    private float balance;
-    private List<Card> cards;
-    private String primaryUser;
-    private String authorizedUser;
-    private List<Transaction> transactions;
-    private String reasonForLock;
+    private final IBank bank;
+    private final long accountId;
+    private final String name;
+    private double savingAmount;
+    private double checkingAmount;
+    private final Collection<Card> cards;
+    private final Collection<Transaction> transactions;
+    private boolean isLocked;
 
-    public void updateAccount() {
-
+    public Account(IBank bank, long accountId, String name) {
+        this.bank = bank;
+        this.accountId = accountId;
+        this.name = name;
+        this.savingAmount = 0;
+        this.checkingAmount = 0;
+        this.cards = new ArrayList<>();
+        this.transactions = new ArrayList<>();
+        this.isLocked = false;
     }
 
-    public void updateBalance() {
-
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void updateUser() {
-
+    public String getName() {
+        return name;
     }
 
-    public void addCheck() {
-
+    public double getSavingAmount() {
+        return savingAmount;
     }
 
-    public void addToTransactions() {
+    public double getCheckingAmount() {
+        return checkingAmount;
+    }
 
+    public Collection<Card> getCards() {
+        return cards;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setSavingAmount(double savingAmount) {
+        this.savingAmount = savingAmount;
+    }
+
+    public void setCheckingAmount(double checkingAmount) {
+        this.checkingAmount = checkingAmount;
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public void removeCard(Card card) {
+        cards.remove(card);
     }
 }
-
-
