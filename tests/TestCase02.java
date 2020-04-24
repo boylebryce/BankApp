@@ -31,7 +31,7 @@ public class TestCase02 {
     public void makeValidDepositAtATM() {
         int accountNumber = 0;
         int depositAmount = 100;
-        testATM.deposit(accountNumber, depositAmount);
 
+        assertEquals("Successful deposit", testATM.deposit(accountNumber, depositAmount));
     }
 }
