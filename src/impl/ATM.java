@@ -121,7 +121,7 @@ public class ATM implements IATM {
     }
 
     @Override
-    public void deposit(AccountType accountType, double amount, boolean printReceipt) {
+    public void depositCash(AccountType accountType, double amount, boolean printReceipt) {
         DepositMoneyBankRequestAttributes requestAttributes = new DepositMoneyBankRequestAttributes(currentAccountId, amount, accountType);
         BankResponse<DepositMoney, DepositMoneyBankResponseAttributes> bankResponse = bankBranch.respondDepositMoney(new BankRequest<>(requestAttributes));
         DepositMoneyBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
@@ -129,6 +129,13 @@ public class ATM implements IATM {
         if (printReceipt) {
             printingReceipt();
         }
+    }
+
+    @Override
+    public void depositCheck(AccountType accountType, Check check, boolean printReceipt) {
+        /*
+            TODO: Implement request/response types
+         */
     }
 
     @Override

@@ -5,17 +5,7 @@ import api.AccountType;
 import api.IATM;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.jar.JarFile;
 
 public class ATMGUI extends JFrame {
     private MainGUI mainGUI;
@@ -178,7 +168,7 @@ public class ATMGUI extends JFrame {
                     if (amount <= 0) {
                         throw new IllegalStateException("Deposit amount must be positive");
                     }
-                    atm.deposit(AccountType.Checking, amount, receiptCheckBox.isSelected());
+                    atm.depositCash(AccountType.Checking, amount, receiptCheckBox.isSelected());
                     atmScreenTextArea.setText("Deposit to checking account: $" + String.format("%.2f", amount));
                     updateMaintenanceCounters();
                 }
@@ -197,7 +187,7 @@ public class ATMGUI extends JFrame {
                     if (amount <= 0) {
                         throw new IllegalStateException("Deposit amount must be positive");
                     }
-                    atm.deposit(AccountType.Saving, amount, receiptCheckBox.isSelected());
+                    atm.depositCash(AccountType.Saving, amount, receiptCheckBox.isSelected());
                     atmScreenTextArea.setText("Deposit to saving account: $" + String.format("%.2f", amount));
                     updateMaintenanceCounters();
                 }

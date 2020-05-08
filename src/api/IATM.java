@@ -18,7 +18,8 @@ public interface IATM {
     // Logic methods
     void authenticateCustomer(long cardNumber, int pinNumber);
     double viewAccount(AccountType accountType);
-    void deposit(AccountType accountType, double amount, boolean printReceipt);
+    void depositCash(AccountType accountType, double amount, boolean printReceipt);
+    void depositCheck(AccountType accountType, Check check, boolean printReceipt);
     void withdraw(AccountType accountType, double amount, boolean printReceipt);
     void quit();
 
