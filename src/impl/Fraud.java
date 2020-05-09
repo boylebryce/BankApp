@@ -30,15 +30,22 @@ public class Fraud implements IFraud {
     public BankResponse<AlertAccount, AlertAccountBankResponseAttributes> respondAlertAccount(BankRequest<AlertAccount, AlertAccountBankRequestAttributes> bankRequest) {
         AlertAccountBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
         long accountId = requestAttributes.getAccountId();
+        AlertAccountBankResponseAttributes.AlertAccountStatus status = null;
+
+        // If the account is not flagged, flag the account for potentially fraudulent activity.
         if (!flaggedAccounts.contains(accountId)) {
             flaggedAccounts.add(accountId);
-            AlertAccountBankResponseAttributes responseAttributes = new AlertAccountBankResponseAttributes(true, AlertAccountBankResponseAttributes.AlertAccountStatus.Flagged);
-            return new BankResponse<>(responseAttributes);
+            status = AlertAccountBankResponseAttributes.AlertAccountStatus.Flagged;
         }
-        LockAccountBankRequestAttributes lockAccountBankRequestAttributes = new LockAccountBankRequestAttributes(requestAttributes.getAccountId());
-        bank.respondLockAccount(new BankRequest<>(lockAccountBankRequestAttributes));
 
-        AlertAccountBankResponseAttributes responseAttributes = new AlertAccountBankResponseAttributes(true, AlertAccountBankResponseAttributes.AlertAccountStatus.Locked);
+        // If the account is already flagged, lock the account.
+        else {
+            LockAccountBankRequestAttributes lockAccountBankRequestAttributes = new LockAccountBankRequestAttributes(requestAttributes.getAccountId());
+            bank.respondLockAccount(new BankRequest<>(lockAccountBankRequestAttributes));
+            status = AlertAccountBankResponseAttributes.AlertAccountStatus.Locked;
+        }
+
+        AlertAccountBankResponseAttributes responseAttributes = new AlertAccountBankResponseAttributes(true, status);
         return new BankResponse<>(responseAttributes);
     }
 }
