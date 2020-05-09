@@ -9,6 +9,8 @@ import api.operations.request.ValidateCheckBankRequestAttributes;
 import api.operations.response.AlertAccountBankResponseAttributes;
 import api.operations.response.ValidateCheckBankResponseAttributes;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,7 +58,21 @@ public class Fraud implements IFraud {
         ValidateCheckBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
         long accountId = requestAttributes.getAccountId();
         Check check = requestAttributes.getCheck();
-        boolean valid = depositedChecks.contains(check);
+        boolean valid = true;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -6);
+        Date staleDate = calendar.getTime();
+
+        // If check with same identifiers has been deposited before, it is invalid
+        if (depositedChecks.contains(check)) {
+            valid = false;
+        }
+
+        // If check is "stale dated" - more than 6 months past check writing date, it is invalid
+        else if (check.getCheckDate().compareTo(staleDate) < 0) {
+            valid = false;
+        }
 
         ValidateCheckBankResponseAttributes responseAttributes = new ValidateCheckBankResponseAttributes(valid);
         return new BankResponse<>(responseAttributes);
