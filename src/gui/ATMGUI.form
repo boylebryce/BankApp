@@ -141,7 +141,7 @@
               <text value="Exit"/>
             </properties>
           </component>
-          <grid id="23802" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="23802" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -151,7 +151,7 @@
             <children>
               <component id="f640f" class="javax.swing.JRadioButton" binding="withdrawRadioButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Withdraw"/>
@@ -172,6 +172,14 @@
                 </constraints>
                 <properties>
                   <text value="Deposit"/>
+                </properties>
+              </component>
+              <component id="8892" class="javax.swing.JRadioButton" binding="depositCheckRadioButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Deposit Check"/>
                 </properties>
               </component>
             </children>
@@ -260,6 +268,7 @@
       <member id="3c387"/>
       <member id="9d091"/>
       <member id="f640f"/>
+      <member id="8892"/>
     </group>
     <group name="atmAccountTypeButtonGroup">
       <member id="f9380"/>

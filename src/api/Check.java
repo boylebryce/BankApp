@@ -9,7 +9,7 @@ public class Check {
     private long checkNumber;
     private Date checkDate;
 
-    public Check(double amount, int routingNumber, int accountNumber, int checkNumber, Date checkDate) {
+    public Check(double amount, long routingNumber, long accountNumber, long checkNumber, Date checkDate) {
         this.amount = amount;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
@@ -61,5 +61,16 @@ public class Check {
         return (routingNumber == check.getRoutingNumber()
             && accountNumber == check.getAccountNumber()
             && checkNumber == check.getCheckNumber());
+    }
+
+    public String toString() {
+        String output = "";
+
+        output += "Routing number: " + Long.toString(routingNumber);
+        output += "/Account number: " + Long.toString(accountNumber);
+        output += "/Check number: " + Long.toString(checkNumber);
+        output += "/Date: " + checkDate.toString();
+
+        return output;
     }
 }

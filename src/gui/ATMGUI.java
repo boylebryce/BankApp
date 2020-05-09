@@ -2,10 +2,17 @@ package gui;
 
 import api.ATMMaintenancePolicy;
 import api.AccountType;
+import api.Check;
 import api.IATM;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static javax.swing.JOptionPane.showInputDialog;
 
 public class ATMGUI extends JFrame {
     private MainGUI mainGUI;
@@ -23,6 +30,7 @@ public class ATMGUI extends JFrame {
     private JRadioButton withdrawRadioButton;
     private JRadioButton viewAccountRadioButton;
     private JRadioButton depositRadioButton;
+    private JRadioButton depositCheckRadioButton;
     private JTextField amountField;
     private JButton executeButton;
     private JTextArea atmScreenTextArea;
@@ -60,6 +68,13 @@ public class ATMGUI extends JFrame {
             receiptCheckBox.setSelected(false);
         });
         depositRadioButton.addActionListener(e -> {
+            amountField.setEnabled(true);
+            amountField.setEditable(true);
+            amountField.setText("");
+            receiptCheckBox.setEnabled(true);
+            receiptCheckBox.setSelected(false);
+        });
+        depositCheckRadioButton.addActionListener(e -> {
             amountField.setEnabled(true);
             amountField.setEditable(true);
             amountField.setText("");
@@ -107,6 +122,7 @@ public class ATMGUI extends JFrame {
         viewAccountRadioButton.setEnabled(!isGuest);
         viewAccountRadioButton.setSelected(true);
         depositRadioButton.setEnabled(!isGuest);
+        depositCheckRadioButton.setEnabled(!isGuest);
         withdrawRadioButton.setEnabled(!isGuest);
         checkingRadioButton.setEnabled(!isGuest);
         savingRadioButton.setEnabled(!isGuest);
@@ -183,6 +199,50 @@ public class ATMGUI extends JFrame {
             }
 
             return;
+        }
+
+        if (depositCheckRadioButton.isSelected()) {
+            AccountType accountType = checkingRadioButton.isSelected() ? AccountType.Checking : AccountType.Saving;
+
+            try {
+                double amount = Double.parseDouble(amountField.getText());
+
+                if (amount <= 0) {
+                    throw new IllegalArgumentException("Deposit amount must be positive");
+                }
+
+                // Get check identifiers
+                long accountNumber = Long.parseLong(showInputDialog("Enter the account number on the check"));
+                long routingNumber = Long.parseLong(showInputDialog("Enter the routing number on the check"));
+                long checkNumber = Long.parseLong(showInputDialog("Enter the check number"));
+
+                DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
+                String inputDate = showInputDialog("Enter the check writing date in the format MM/DD/YY");
+                Date checkDate = format.parse(inputDate);
+
+                Check check = new Check(amount, routingNumber, accountNumber, checkNumber, checkDate);
+                boolean depositResult = atm.depositCheck(accountType, check, receiptCheckBox.isSelected());
+
+                if (depositResult) {
+                    atmScreenTextArea.setText("Deposit to " + accountType + " account: $" + String.format("%.2f", amount));
+                }
+                else {
+                    atmScreenTextArea.setText("Error in check deposit - please visit a branch for more details");
+                }
+
+
+            }
+            catch (NumberFormatException e) {
+                atmScreenTextArea.setText("Error parsing input");
+                return;
+            }
+            catch (IllegalArgumentException e) {
+                atmScreenTextArea.setText(e.getMessage());
+                return;
+            } catch (ParseException e) {
+                atmScreenTextArea.setText("Error parsing check writing date");
+                return;
+            }
         }
 
         if (withdrawRadioButton.isSelected()) {

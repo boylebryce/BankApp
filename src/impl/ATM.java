@@ -131,11 +131,19 @@ public class ATM implements IATM {
         }
     }
 
+
+    // Returns true if check successfully deposited, else false if check is not successfully deposited (failed fraud validation)
     @Override
-    public void depositCheck(AccountType accountType, Check check, boolean printReceipt) {
-        /*
-            TODO: Implement request/response types
-         */
+    public boolean depositCheck(AccountType accountType, Check check, boolean printReceipt) {
+        DepositCheckBankRequestAttributes requestAttributes = new DepositCheckBankRequestAttributes(currentAccountId, check, accountType);
+        BankResponse<DepositCheck, DepositCheckBankResponseAttributes> bankResponse = bankBranch.respondDepositCheck(new BankRequest<>(requestAttributes));
+        DepositCheckBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
+
+        if (responseAttributes.isSuccessful() && printReceipt) {
+            printingReceipt();
+        }
+
+        return responseAttributes.isSuccessful();
     }
 
     @Override

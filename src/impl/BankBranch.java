@@ -111,6 +111,11 @@ public class BankBranch implements IBankBranch {
     }
 
     @Override
+    public BankResponse<DepositCheck, DepositCheckBankResponseAttributes> respondDepositCheck(BankRequest<DepositCheck, DepositCheckBankRequestAttributes> bankRequest) {
+        return bank.respondDepositCheck(bankRequest);
+    }
+
+    @Override
     public BankResponse<WithdrawMoney, WithdrawMoneyBankResponseAttributes> respondWithdrawMoney(BankRequest<WithdrawMoney, WithdrawMoneyBankRequestAttributes> bankRequest) {
         return bank.respondWithdrawMoney(bankRequest);
     }
