@@ -1,13 +1,13 @@
 package impl;
 
-import api.BankRequest;
-import api.BankResponse;
-import api.IBank;
-import api.IFraud;
+import api.*;
 import api.operations.AlertAccount;
+import api.operations.ValidateCheck;
 import api.operations.request.AlertAccountBankRequestAttributes;
 import api.operations.request.LockAccountBankRequestAttributes;
+import api.operations.request.ValidateCheckBankRequestAttributes;
 import api.operations.response.AlertAccountBankResponseAttributes;
+import api.operations.response.ValidateCheckBankResponseAttributes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,10 +15,12 @@ import java.util.Set;
 public class Fraud implements IFraud {
     private IBank bank;
     private Set<Long> flaggedAccounts;
+    private Set<Check> depositedChecks;
 
     public Fraud(IBank bank) {
         this.bank = bank;
         this.flaggedAccounts = new HashSet<>();
+        this.depositedChecks = new HashSet<>();
     }
 
     @Override
@@ -46,6 +48,17 @@ public class Fraud implements IFraud {
         }
 
         AlertAccountBankResponseAttributes responseAttributes = new AlertAccountBankResponseAttributes(true, status);
+        return new BankResponse<>(responseAttributes);
+    }
+
+    @Override
+    public BankResponse<ValidateCheck, ValidateCheckBankResponseAttributes> respondValidateCheck(BankRequest<ValidateCheck, ValidateCheckBankRequestAttributes> bankRequest) {
+        ValidateCheckBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
+        long accountId = requestAttributes.getAccountId();
+        Check check = requestAttributes.getCheck();
+        boolean valid = depositedChecks.contains(check);
+
+        ValidateCheckBankResponseAttributes responseAttributes = new ValidateCheckBankResponseAttributes(valid);
         return new BankResponse<>(responseAttributes);
     }
 }

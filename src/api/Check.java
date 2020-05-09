@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class Check {
     private double amount;
-    private int routingNumber;
-    private int accountNumber;
-    private int checkNumber;
+    private long routingNumber;
+    private long accountNumber;
+    private long checkNumber;
     private Date checkDate;
 
     public Check(double amount, int routingNumber, int accountNumber, int checkNumber, Date checkDate) {
@@ -25,7 +25,7 @@ public class Check {
         this.amount = amount;
     }
 
-    public int getRoutingNumber() {
+    public long getRoutingNumber() {
         return routingNumber;
     }
 
@@ -33,7 +33,7 @@ public class Check {
         this.routingNumber = routingNumber;
     }
 
-    public int getAccountNumber() {
+    public long getAccountNumber() {
         return accountNumber;
     }
 
@@ -41,7 +41,7 @@ public class Check {
         this.accountNumber = accountNumber;
     }
 
-    public int getCheckNumber() {
+    public long getCheckNumber() {
         return checkNumber;
     }
 
@@ -55,5 +55,11 @@ public class Check {
 
     public void setCheckDate(Date checkDate) {
         this.checkDate = checkDate;
+    }
+
+    public boolean sameIdentifiers(Check check) {
+        return (routingNumber == check.getRoutingNumber()
+            && accountNumber == check.getAccountNumber()
+            && checkNumber == check.getCheckNumber());
     }
 }
