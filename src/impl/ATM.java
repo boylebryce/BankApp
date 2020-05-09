@@ -122,9 +122,9 @@ public class ATM implements IATM {
 
     @Override
     public void depositCash(AccountType accountType, double amount, boolean printReceipt) {
-        DepositMoneyBankRequestAttributes requestAttributes = new DepositMoneyBankRequestAttributes(currentAccountId, amount, accountType);
-        BankResponse<DepositMoney, DepositMoneyBankResponseAttributes> bankResponse = bankBranch.respondDepositMoney(new BankRequest<>(requestAttributes));
-        DepositMoneyBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
+        DepositCashBankRequestAttributes requestAttributes = new DepositCashBankRequestAttributes(currentAccountId, amount, accountType);
+        BankResponse<DepositCash, DepositCashBankResponseAttributes> bankResponse = bankBranch.respondDepositCash(new BankRequest<>(requestAttributes));
+        DepositCashBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
         moneyLevel += amount;
         if (printReceipt) {
             printingReceipt();

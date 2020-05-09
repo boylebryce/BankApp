@@ -115,8 +115,8 @@ public class Bank implements IBank {
     }
 
     @Override
-    public BankResponse<DepositMoney, DepositMoneyBankResponseAttributes> respondDepositMoney(BankRequest<DepositMoney, DepositMoneyBankRequestAttributes> bankRequest) {
-        DepositMoneyBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
+    public BankResponse<DepositCash, DepositCashBankResponseAttributes> respondDepositCash(BankRequest<DepositCash, DepositCashBankRequestAttributes> bankRequest) {
+        DepositCashBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
         Account account = findAccountById(requestAttributes.getAccountId());
         boolean isSuccessful = false;
         double amount = requestAttributes.getAmount();
@@ -133,8 +133,8 @@ public class Bank implements IBank {
                         amount, Transaction.TransactionType.Deposit));
             }
         }
-        DepositMoneyBankResponseAttributes responseAttributes
-                = new DepositMoneyBankResponseAttributes(isSuccessful);
+        DepositCashBankResponseAttributes responseAttributes
+                = new DepositCashBankResponseAttributes(isSuccessful);
         return new BankResponse<>(responseAttributes);
     }
 
