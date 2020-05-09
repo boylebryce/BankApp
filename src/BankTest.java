@@ -72,7 +72,7 @@ public class BankTest {
         Assert.assertEquals(0.0, amount, 0.01);
 
         double depositAmount = 500;
-        atm.deposit(AccountType.Saving, depositAmount, false);
+        atm.depositCash(AccountType.Saving, depositAmount, false);
         System.out.println("User " + accountName + " made deposit to " + AccountType.Saving  + " account: " + depositAmount);
         amount = atm.viewAccount(AccountType.Saving);
         System.out.println("User " + accountName + " got amount from " + AccountType.Saving  + " account: " + amount);

@@ -116,10 +116,10 @@ public class Main {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
                 switch (choice) {
                     case 1:
-                        iatm.deposit(AccountType.Saving, amount, false);
+                        iatm.depositCash(AccountType.Saving, amount, false);
                         break;
                     case 2:
-                        iatm.deposit(AccountType.Checking, amount, false);
+                        iatm.depositCash(AccountType.Checking, amount, false);
                         break;
                     default:
                         throw new NumberFormatException();

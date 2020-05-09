@@ -2,20 +2,17 @@ package gui;
 
 import api.ATMMaintenancePolicy;
 import api.AccountType;
+import api.Check;
 import api.IATM;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.jar.JarFile;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static javax.swing.JOptionPane.showInputDialog;
 
 public class ATMGUI extends JFrame {
     private MainGUI mainGUI;
@@ -33,6 +30,7 @@ public class ATMGUI extends JFrame {
     private JRadioButton withdrawRadioButton;
     private JRadioButton viewAccountRadioButton;
     private JRadioButton depositRadioButton;
+    private JRadioButton depositCheckRadioButton;
     private JTextField amountField;
     private JButton executeButton;
     private JTextArea atmScreenTextArea;
@@ -70,6 +68,13 @@ public class ATMGUI extends JFrame {
             receiptCheckBox.setSelected(false);
         });
         depositRadioButton.addActionListener(e -> {
+            amountField.setEnabled(true);
+            amountField.setEditable(true);
+            amountField.setText("");
+            receiptCheckBox.setEnabled(true);
+            receiptCheckBox.setSelected(false);
+        });
+        depositCheckRadioButton.addActionListener(e -> {
             amountField.setEnabled(true);
             amountField.setEditable(true);
             amountField.setText("");
@@ -117,6 +122,7 @@ public class ATMGUI extends JFrame {
         viewAccountRadioButton.setEnabled(!isGuest);
         viewAccountRadioButton.setSelected(true);
         depositRadioButton.setEnabled(!isGuest);
+        depositCheckRadioButton.setEnabled(!isGuest);
         withdrawRadioButton.setEnabled(!isGuest);
         checkingRadioButton.setEnabled(!isGuest);
         savingRadioButton.setEnabled(!isGuest);
@@ -161,96 +167,107 @@ public class ATMGUI extends JFrame {
 
     private void processExecuteButtonButton() {
         if (viewAccountRadioButton.isSelected()) {
-            if (checkingRadioButton.isSelected()) {
-                double amount = atm.viewAccount(AccountType.Checking);
-                atmScreenTextArea.setText("Your checking account amount: $" + String.format("%.2f", amount));
-            }
-            else {
-                double amount = atm.viewAccount(AccountType.Saving);
-                atmScreenTextArea.setText("Your saving account amount: $" + String.format("%.2f", amount));
-            }
+            AccountType accountType = checkingRadioButton.isSelected() ? AccountType.Checking : AccountType.Saving;
+
+            double amount = atm.viewAccount(accountType);
+            atmScreenTextArea.setText("Your " + accountType + " account amount: $" + String.format("%.2f", amount));
+
             return;
         }
+
         if (depositRadioButton.isSelected()) {
-            if (checkingRadioButton.isSelected()) {
-                try {
-                    double amount = Double.parseDouble(amountField.getText());
-                    if (amount <= 0) {
-                        throw new IllegalStateException("Deposit amount must be positive");
-                    }
-                    atm.deposit(AccountType.Checking, amount, receiptCheckBox.isSelected());
-                    atmScreenTextArea.setText("Deposit to checking account: $" + String.format("%.2f", amount));
-                    updateMaintenanceCounters();
+            AccountType accountType = checkingRadioButton.isSelected() ? AccountType.Checking : AccountType.Saving;
+
+            try {
+                double amount = Double.parseDouble(amountField.getText());
+
+                if (amount <= 0) {
+                    throw new IllegalStateException("Deposit amount must be positive");
                 }
-                catch (IllegalStateException e) {
-                    atmScreenTextArea.setText(e.getMessage());
-                    return;
-                }
-                catch (NumberFormatException e) {
-                    atmScreenTextArea.setText("Can not parse deposit amount");
-                    return;
-                }
+
+                atm.depositCash(accountType, amount, receiptCheckBox.isSelected());
+                atmScreenTextArea.setText("Deposit to " + accountType + " account: $" + String.format("%.2f", amount));
+                updateMaintenanceCounters();
             }
-            else {
-                try {
-                    double amount = Double.parseDouble(amountField.getText());
-                    if (amount <= 0) {
-                        throw new IllegalStateException("Deposit amount must be positive");
-                    }
-                    atm.deposit(AccountType.Saving, amount, receiptCheckBox.isSelected());
-                    atmScreenTextArea.setText("Deposit to saving account: $" + String.format("%.2f", amount));
-                    updateMaintenanceCounters();
-                }
-                catch (IllegalStateException e) {
-                    atmScreenTextArea.setText(e.getMessage());
-                    return;
-                }
-                catch (NumberFormatException e) {
-                    atmScreenTextArea.setText("Can not parse deposit amount");
-                    return;
-                }
+            catch (IllegalStateException e) {
+                atmScreenTextArea.setText(e.getMessage());
+                return;
             }
+            catch (NumberFormatException e) {
+                atmScreenTextArea.setText("Can not parse deposit amount");
+                return;
+            }
+
             return;
         }
+
+        if (depositCheckRadioButton.isSelected()) {
+            AccountType accountType = checkingRadioButton.isSelected() ? AccountType.Checking : AccountType.Saving;
+
+            try {
+                double amount = Double.parseDouble(amountField.getText());
+
+                if (amount <= 0) {
+                    throw new IllegalArgumentException("Deposit amount must be positive");
+                }
+
+                // Get check identifiers
+                long accountNumber = Long.parseLong(showInputDialog("Enter the account number on the check"));
+                long routingNumber = Long.parseLong(showInputDialog("Enter the routing number on the check"));
+                long checkNumber = Long.parseLong(showInputDialog("Enter the check number"));
+
+                DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
+                String inputDate = showInputDialog("Enter the check writing date in the format MM/DD/YY");
+                Date checkDate = format.parse(inputDate);
+
+                Check check = new Check(amount, routingNumber, accountNumber, checkNumber, checkDate);
+                boolean depositResult = atm.depositCheck(accountType, check, receiptCheckBox.isSelected());
+
+                if (depositResult) {
+                    atmScreenTextArea.setText("Deposit to " + accountType + " account: $" + String.format("%.2f", amount));
+                }
+                else {
+                    atmScreenTextArea.setText("Error in check deposit - please visit a branch for more details");
+                }
+
+
+            }
+            catch (NumberFormatException e) {
+                atmScreenTextArea.setText("Error parsing input");
+                return;
+            }
+            catch (IllegalArgumentException e) {
+                atmScreenTextArea.setText(e.getMessage());
+                return;
+            } catch (ParseException e) {
+                atmScreenTextArea.setText("Error parsing check writing date");
+                return;
+            }
+        }
+
         if (withdrawRadioButton.isSelected()) {
-            if (checkingRadioButton.isSelected()) {
-                try {
-                    double amount = Double.parseDouble(amountField.getText());
-                    if (amount <= 0) {
-                        throw new IllegalStateException("Withdraw amount must be positive");
-                    }
-                    atm.withdraw(AccountType.Checking, amount, receiptCheckBox.isSelected());
-                    atmScreenTextArea.setText("Withdraw from checking account: $" + String.format("%.2f", amount));
-                    updateMaintenanceCounters();
+            AccountType accountType = checkingRadioButton.isSelected() ? AccountType.Checking : AccountType.Saving;
+
+            try {
+                double amount = Double.parseDouble(amountField.getText());
+
+                if (amount <= 0) {
+                    throw new IllegalStateException("Withdraw amount must be positive");
                 }
-                catch (NumberFormatException e) {
-                    atmScreenTextArea.setText("Can not parse withdraw amount");
-                    return;
-                }
-                catch (IllegalArgumentException | IllegalStateException e) {
-                    atmScreenTextArea.setText(e.getMessage());
-                    return;
-                }
+
+                atm.withdraw(accountType, amount, receiptCheckBox.isSelected());
+                atmScreenTextArea.setText("Withdraw from " + accountType + " account: $" + String.format("%.2f", amount));
+                updateMaintenanceCounters();
             }
-            else {
-                try {
-                    double amount = Double.parseDouble(amountField.getText());
-                    if (amount <= 0) {
-                        throw new IllegalStateException("Withdraw amount must be positive");
-                    }
-                    atm.withdraw(AccountType.Saving, amount, receiptCheckBox.isSelected());
-                    atmScreenTextArea.setText("Withdraw from saving account: $" + String.format("%.2f", amount));
-                    updateMaintenanceCounters();
-                }
-                catch (NumberFormatException e) {
-                    atmScreenTextArea.setText("Can not parse withdraw amount");
-                    return;
-                }
-                catch (IllegalArgumentException | IllegalStateException e) {
-                    atmScreenTextArea.setText(e.getMessage());
-                    return;
-                }
+            catch (NumberFormatException e) {
+                atmScreenTextArea.setText("Can not parse withdraw amount");
+                return;
             }
+            catch (IllegalArgumentException | IllegalStateException e) {
+                atmScreenTextArea.setText(e.getMessage());
+                return;
+            }
+
             return;
         }
      }

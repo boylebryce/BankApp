@@ -15,8 +15,13 @@ public interface IBankRequestServer {
         throw new UnsupportedOperationException();
     }
 
-    default BankResponse<DepositMoney, DepositMoneyBankResponseAttributes>
-    respondDepositMoney(BankRequest<DepositMoney, DepositMoneyBankRequestAttributes> bankRequest) {
+    default BankResponse<DepositCash, DepositCashBankResponseAttributes>
+    respondDepositCash(BankRequest<DepositCash, DepositCashBankRequestAttributes> bankRequest) {
+        throw new UnsupportedOperationException();
+    }
+
+    default BankResponse<DepositCheck, DepositCheckBankResponseAttributes>
+    respondDepositCheck(BankRequest<DepositCheck, DepositCheckBankRequestAttributes> bankRequest) {
         throw new UnsupportedOperationException();
     }
 
