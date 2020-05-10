@@ -1,16 +1,14 @@
 package api.operations.request;
 
 import api.AccountType;
-import api.operations.CredentialsValidation;
-import api.operations.DepositMoney;
-import api.operations.response.BankResponseAttributes;
+import api.operations.DepositCash;
 
-public class DepositMoneyBankRequestAttributes extends BankRequestAttributes<DepositMoney> {
+public class DepositCashBankRequestAttributes extends BankRequestAttributes<DepositCash> {
     private final long accountId;
     private final double amount;
     private final AccountType accountType;
 
-    public DepositMoneyBankRequestAttributes(long accountId, double amount, AccountType accountType) {
+    public DepositCashBankRequestAttributes(long accountId, double amount, AccountType accountType) {
         this.accountId = accountId;
         this.amount = amount;
         this.accountType = accountType;

@@ -121,14 +121,29 @@ public class ATM implements IATM {
     }
 
     @Override
-    public void deposit(AccountType accountType, double amount, boolean printReceipt) {
-        DepositMoneyBankRequestAttributes requestAttributes = new DepositMoneyBankRequestAttributes(currentAccountId, amount, accountType);
-        BankResponse<DepositMoney, DepositMoneyBankResponseAttributes> bankResponse = bankBranch.respondDepositMoney(new BankRequest<>(requestAttributes));
-        DepositMoneyBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
+    public void depositCash(AccountType accountType, double amount, boolean printReceipt) {
+        DepositCashBankRequestAttributes requestAttributes = new DepositCashBankRequestAttributes(currentAccountId, amount, accountType);
+        BankResponse<DepositCash, DepositCashBankResponseAttributes> bankResponse = bankBranch.respondDepositCash(new BankRequest<>(requestAttributes));
+        DepositCashBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
         moneyLevel += amount;
         if (printReceipt) {
             printingReceipt();
         }
+    }
+
+
+    // Returns true if check successfully deposited, else false if check is not successfully deposited (failed fraud validation)
+    @Override
+    public boolean depositCheck(AccountType accountType, Check check, boolean printReceipt) {
+        DepositCheckBankRequestAttributes requestAttributes = new DepositCheckBankRequestAttributes(currentAccountId, check, accountType);
+        BankResponse<DepositCheck, DepositCheckBankResponseAttributes> bankResponse = bankBranch.respondDepositCheck(new BankRequest<>(requestAttributes));
+        DepositCheckBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
+
+        if (responseAttributes.isSuccessful() && printReceipt) {
+            printingReceipt();
+        }
+
+        return responseAttributes.isSuccessful();
     }
 
     @Override
