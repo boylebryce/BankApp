@@ -63,26 +63,47 @@ public class BankBranch implements IBankBranch {
     @Override
     public void deleteAccount(long accountId) {
         DeleteAccountBankRequestAttributes requestAttributes = new DeleteAccountBankRequestAttributes(accountId);
-        bank.respondDeleteAccount(new BankRequest<>(requestAttributes));
+        DeleteAccountBankResponseAttributes responseAttributes =
+                bank.respondDeleteAccount(new BankRequest<>(requestAttributes)).getBankResponseAttributes();
+        if (!responseAttributes.isSuccessful()) {
+            throw new IllegalArgumentException("No account with given ID: " + accountId);
+        }
     }
 
     @Override
-    public long openCard(long accountId) {
+    public long[] openCard(long accountId) {
         OpenCardBankRequestAttributes requestAttributes = new OpenCardBankRequestAttributes(accountId);
         BankResponse<OpenCard, OpenCardBankResponseAttributes> response = bank.respondOpenCard(new BankRequest<>(requestAttributes));
-        return response.getBankResponseAttributes().getCardNumber();
+        OpenCardBankResponseAttributes responseAttributes = response.getBankResponseAttributes();
+        if (!responseAttributes.isSuccessful()) {
+            throw new IllegalArgumentException("No account with given ID: " + accountId);
+        }
+        return new long[]{response.getBankResponseAttributes().getCardNumber(), response.getBankResponseAttributes().getPinNumber()};
     }
 
     @Override
     public void closeCard(long cardNumber) {
         CloseCardBankRequestAttributes requestAttributes = new CloseCardBankRequestAttributes(cardNumber);
-        bank.respondCloseCard(new BankRequest<>(requestAttributes));
+        CloseCardBankResponseAttributes responseAttributes =
+                bank.respondCloseCard(new BankRequest<>(requestAttributes)).getBankResponseAttributes();
+        if (!responseAttributes.isSuccessful()) {
+            throw new IllegalArgumentException("No card with given number: " + cardNumber);
+        }
     }
 
     @Override
     public void changePinNumber(long cardNumber, int pinNumber) {
         ChangePinNumberBankRequestAttributes requestAttributes = new ChangePinNumberBankRequestAttributes(cardNumber, pinNumber);
-        bank.respondChangePinNumber(new BankRequest<>(requestAttributes));
+        ChangePinNumberBankResponseAttributes responseAttributes =
+                bank.respondChangePinNumber(new BankRequest<>(requestAttributes)).getBankResponseAttributes();
+        if (!responseAttributes.isSuccessful()) {
+            if (responseAttributes.getChangePinFailReason() == ChangePinNumberBankResponseAttributes.ChangePinFailReason.NoSuchCard) {
+                throw new IllegalArgumentException(responseAttributes.getChangePinFailReason().toString() + cardNumber);
+            }
+            else {
+                throw new IllegalArgumentException(responseAttributes.getChangePinFailReason().toString() + pinNumber);
+            }
+        }
     }
 
     @Override
@@ -106,13 +127,8 @@ public class BankBranch implements IBankBranch {
     }
 
     @Override
-    public BankResponse<DepositCash, DepositCashBankResponseAttributes> respondDepositCash(BankRequest<DepositCash, DepositCashBankRequestAttributes> bankRequest) {
-        return bank.respondDepositCash(bankRequest);
-    }
-
-    @Override
-    public BankResponse<DepositCheck, DepositCheckBankResponseAttributes> respondDepositCheck(BankRequest<DepositCheck, DepositCheckBankRequestAttributes> bankRequest) {
-        return bank.respondDepositCheck(bankRequest);
+    public BankResponse<DepositMoney, DepositMoneyBankResponseAttributes> respondDepositMoney(BankRequest<DepositMoney, DepositMoneyBankRequestAttributes> bankRequest) {
+        return bank.respondDepositMoney(bankRequest);
     }
 
     @Override

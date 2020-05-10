@@ -1,167 +1,140 @@
 package gui;
 
+import api.IBankBranch;
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.FocusAdapter;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.jar.JarFile;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class BankBranchGUI extends JFrame {
-    private JPanel panel1;
+    private final MainGUI mainGUI;
+    private final IBankBranch bankBranch;
 
-    public BankBranchGUI() {
-//        createUIComponents();
+    private JPanel mainPanel;
+    private JRadioButton createAccountButton;
+    private JRadioButton removeAccountButton;
+    private JRadioButton openCardButton;
+    private JRadioButton changePinButton;
+    private JRadioButton closeCardButton;
+    private JButton executeButton;
+    private JTextArea branchShowArea;
+    private JLabel actionLabel;
+    private JTextField inputField;
+    private JLabel branchNameLabel;
 
-//        DefaultTableModel model = (DefaultTableModel) table1.getModel();
-////        model.addRow(new Object[]{"1", "test", "test", "test"});
-//        this.reviewHandler = reviewHandler;
-//
-//        setContentPane(panel1);
-//        setVisible(true);
-//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        loadReviewsButton.addActionListener(e -> processLoadButtonAction());
-//        searchButton.addActionListener(e -> processSearchButtonAction());
-//        deleteButton.addActionListener(e -> processDeleteButtonAction());
+    public BankBranchGUI(MainGUI mainGUI, IBankBranch bankBranch) {
+        this.mainGUI = mainGUI;
+        this.bankBranch = bankBranch;
+        setContentPane(mainPanel);
+        setVisible(true);
+        pack();
+        createUIComponents();
     }
 
     private void createUIComponents() {
-//        table1 = new JTable(new MovieReviewTableModel());
-//        table1.getSelectionModel().addListSelectionListener(e -> deleteButton.setEnabled(table1.getSelectedRow() >= 0));
+        branchNameLabel.setText(bankBranch.getBranchName());
+
+        executeButton.addActionListener(e -> processExecuteButtonButton());
+
+        createAccountButton.addActionListener(e -> resetUI());
+        removeAccountButton.addActionListener(e -> resetUI());
+        openCardButton.addActionListener(e -> resetUI());
+        closeCardButton.addActionListener(e -> resetUI());
+        changePinButton.addActionListener(e -> resetUI());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainGUI.setVisible(true);
+            }
+        });
+        resetUI();
     }
 
-    private void processLoadButtonAction() {
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-//        int result = fileChooser.showOpenDialog(null);
-//        if (result == JFileChooser.APPROVE_OPTION) {
-//            File file = fileChooser.getSelectedFile();
-//            int realClass = -1;
-//            if (positiveRadioButton.isSelected()) {
-//                realClass = 0;
-//            }
-//            else if (negativeRadioButton.isSelected()) {
-//                realClass = 1;
-//            }
-//            else {
-//                realClass = 2;
-//            }
-//            reviewHandler.loadReviews(file.getPath(), realClass);
-//        }
+    private void resetUI() {
+        if (createAccountButton.isSelected()) {
+            actionLabel.setText("Please, enter new bank client name:");
+        } else if (removeAccountButton.isSelected()) {
+            actionLabel.setText("Please, enter bank client id to remove:");
+        } else if (openCardButton.isSelected()) {
+            actionLabel.setText("Please, enter bank client id to create card for:");
+        } else if (closeCardButton.isSelected()) {
+            actionLabel.setText("Please, enter card number to close:");
+        } else if (changePinButton.isSelected()) {
+            actionLabel.setText("Please, enter bank card number to change pin and new pin code (space separated):");
+        }
     }
 
-    void processSearchButtonAction() {
-//        Collection<MovieReview> foundReviews;
-//        if (IDRadioButton.isSelected()) {
-//            MovieReview movieReview = reviewHandler.searchById(Integer.parseInt(textField1.getText()));
-//            foundReviews = movieReview == null ? Collections.emptyList() : Collections.singleton(movieReview);
-//        }
-//        else {
-//            foundReviews = reviewHandler.searchBySubstring(textField1.getText());
-//            if (foundReviews == null) {
-//                foundReviews = Collections.emptyList();
-//            }
-//        }
-//
-//        MovieReviewTableModel model = (MovieReviewTableModel)table1.getModel();
-//        model.clear();
-//        for (MovieReview movieReview : foundReviews) {
-//            model.addRow(movieReview);
-//        }
+    private void processExecuteButtonButton() {
+        if (createAccountButton.isSelected()) {
+            String line = inputField.getText().trim();
+            if (line.isEmpty()) {
+                branchShowArea.setText("ERROR: You entered empty client name");
+            } else {
+                long clientId = bankBranch.createAccount(line);
+                branchShowArea.setText("New client created. Bank Account ID: " + clientId);
+            }
+        } else if (removeAccountButton.isSelected()) {
+            String line = inputField.getText().trim();
+            try {
+                long clientId = Long.parseLong(line);
+                bankBranch.deleteAccount(clientId);
+                branchShowArea.setText("Bank Account with ID: " + clientId + " was removed");
+            } catch (NumberFormatException e) {
+                branchShowArea.setText("ERROR: Can not parse account ID");
+            } catch (IllegalArgumentException e) {
+                branchShowArea.setText("ERROR: " + e.getMessage());
+            }
+        } else if (openCardButton.isSelected()) {
+            String line = inputField.getText().trim();
+            try {
+                long clientId = Long.parseLong(line);
+                long[] numbers = bankBranch.openCard(clientId);
+                branchShowArea.setText("A card for Account with ID: " + clientId + " was created" + System.lineSeparator()
+                        + "Card number: " + numbers[0] + "  Pin number: " + numbers[1]);
+            } catch (NumberFormatException e) {
+                branchShowArea.setText("ERROR: Can not parse account ID");
+            } catch (IllegalArgumentException e) {
+                branchShowArea.setText("ERROR: " + e.getMessage());
+            }
+        } else if (closeCardButton.isSelected()) {
+            String line = inputField.getText().trim();
+            try {
+                long cardNumber = Long.parseLong(line);
+                bankBranch.closeCard(cardNumber);
+                branchShowArea.setText("Card with number: " + cardNumber + " was closed");
+            } catch (NumberFormatException e) {
+                branchShowArea.setText("ERROR: Can not parse card number");
+            } catch (IllegalArgumentException e) {
+                branchShowArea.setText("ERROR: " + e.getMessage());
+            }
+        } else if (changePinButton.isSelected()) {
+            String line = inputField.getText().trim();
+            try (Scanner lineScan = new Scanner(line)) {
+                long cardNumber = -1;
+                int newPinNumber = -1;
+                try {
+                    cardNumber = lineScan.nextLong();
+                } catch (NoSuchElementException e) {
+                    branchShowArea.setText("ERROR: Can not parse card number");
+                    return;
+                }
+                try {
+                    newPinNumber = lineScan.nextInt();
+                } catch (NoSuchElementException e) {
+                    branchShowArea.setText("ERROR: Can not parse PIN number");
+                    return;
+                }
+                try {
+                    bankBranch.changePinNumber(cardNumber, newPinNumber);
+                    branchShowArea.setText("PIN code for card with number: " + cardNumber + " was changed to " + newPinNumber);
+                } catch (IllegalArgumentException e) {
+                    branchShowArea.setText("ERROR: " + e.getMessage());
+                }
+            }
+        }
     }
-
-    private void processDeleteButtonAction() {
-//        MovieReviewTableModel model = (MovieReviewTableModel) table1.getModel();
-//        int id = (int)model.getValueAt(table1.getSelectedRow(), 0);
-//        reviewHandler.deleteReview(id);
-//        model.removeRow(id);
-    }
-
-//    static class MovieReviewTableModel extends AbstractTableModel {
-//        private List<MovieReview> reviews;
-//
-//        public MovieReviewTableModel() {
-//            reviews = new ArrayList<>();
-//        }
-//
-//        @Override
-//        public String getColumnName(int columnIndex) {
-//            switch (columnIndex) {
-//                case 0:
-//                    return "ID";
-//                case 1:
-//                    return "Text";
-//                case 2:
-//                    return "Predicted polarity";
-//                case 3:
-//                    return "Real polarity";
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        public int getRowCount() {
-//            return reviews.size();
-//        }
-//
-//        @Override
-//        public int getColumnCount() {
-//            return 4;
-//        }
-//
-//        @Override
-//        public Object getValueAt(int rowIndex, int columnIndex) {
-//            MovieReview review = reviews.get(rowIndex);
-//            switch (columnIndex) {
-//                case 0:
-//                    return review.getId();
-//                case 1:
-//                    return review.getText();
-//                case 2:
-//                    return MovieReview.getPolarityString(review.getPredictedPolarity());
-//                case 3:
-//                    return MovieReview.getPolarityString(review.getRealPolarity());
-//            }
-//            return null;
-//        }
-//
-//        public void addRow(MovieReview review) {
-//            int rowCount = getRowCount();
-//            reviews.add(review);
-//            fireTableRowsInserted(rowCount, rowCount);
-//        }
-//
-//        public void removeRow(int id) {
-//            int index = -1;
-//            for (int i = 0; i<reviews.size(); i++) {
-//                if (reviews.get(i).getId() == id) {
-//                    index = i;
-//                    break;
-//                }
-//            }
-//            if (index >= 0) {
-//                reviews.remove(index);
-//                fireTableRowsDeleted(index, index);
-//            }
-//        }
-//
-//        public void clear() {
-//            int rowCount = getRowCount();
-//            if (rowCount > 0) {
-//                reviews.clear();
-//                fireTableRowsDeleted(0, rowCount-1);
-//            }
-//        }
-//    }
-
-
 }

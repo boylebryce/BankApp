@@ -17,7 +17,11 @@ public class Card {
         return pinNumber;
     }
 
-    public void setPinNumber(int pinNumber) {
+    public boolean setPinNumber(int pinNumber) {
+        if (this.pinNumber == pinNumber) {
+            return false;
+        }
         this.pinNumber = pinNumber;
+        return true;
     }
 }

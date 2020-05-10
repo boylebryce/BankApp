@@ -45,8 +45,7 @@ public class MainGUI extends JFrame {
         }
         bankBranchTable = new JTable(bankBranchTableModel);
         bankBranchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        bankBranchTable.getSelectionModel().addListSelectionListener(e -> goToBankBranchButton.setEnabled(atmTable.getSelectedRow() < 0));
-
+        bankBranchTable.getSelectionModel().addListSelectionListener(e -> goToBankBranchButton.setEnabled(bankBranchTable.getSelectedRow() >= 0));
     }
 
     private void processGoToATMButtonAction() {
@@ -57,7 +56,10 @@ public class MainGUI extends JFrame {
     }
 
     void processGoToBankBranchButtonAction() {
-
+        this.setVisible(false);
+        BankBranchTableModel bankBranchTableModel = (BankBranchTableModel) bankBranchTable.getModel();
+        IBankBranch iBankBranch = bankBranchTableModel.getSelectedBranch(bankBranchTable.getSelectedRow());
+        new BankBranchGUI(this, iBankBranch);
     }
 
     static class ATMTableModel extends AbstractTableModel {
@@ -149,6 +151,10 @@ public class MainGUI extends JFrame {
             int rowCount = getRowCount();
             bankBranches.add(bankBranch);
             fireTableRowsInserted(rowCount, rowCount);
+        }
+
+        public IBankBranch getSelectedBranch(int i) {
+            return bankBranches.get(i);
         }
     }
 }

@@ -28,9 +28,10 @@ public class BankTest {
         accountName = "John Smith";
         long accountId = bankBranch.createAccount(accountName);
         System.out.println("Account for " + accountName + " created. Id = " + accountId);
-        long cardId = bankBranch.openCard(accountId);
+        long[] ns = bankBranch.openCard(accountId);
+        long cardId = ns[0];
         System.out.println(accountName + " opened card. Card Id = " + cardId);
-        int newPinNumber = 1234;
+        int newPinNumber = (int)ns[1];
         bankBranch.changePinNumber(cardId, newPinNumber);
 
         try {
@@ -58,10 +59,11 @@ public class BankTest {
         accountName = "Jack Brown";
         long accountId = bankBranch.createAccount(accountName);
         System.out.println("Account for " + accountName + " created. Id = " + accountId);
-        long cardId = bankBranch.openCard(accountId);
+        long[] ns = bankBranch.openCard(accountId);
+        long cardId = ns[0];
         System.out.println(accountName + " opened card. Card Id = " + cardId);
-
-        atm.authenticateCustomer(cardId, 0);
+        long newPinNumber = ns[1];
+        atm.authenticateCustomer(cardId, (int)newPinNumber);
         System.out.println("ATM Authentication Success");
 
         double amount = atm.viewAccount(AccountType.Saving);
@@ -72,7 +74,7 @@ public class BankTest {
         Assert.assertEquals(0.0, amount, 0.01);
 
         double depositAmount = 500;
-        atm.depositCash(AccountType.Saving, depositAmount, false);
+        atm.deposit(AccountType.Saving, depositAmount, false);
         System.out.println("User " + accountName + " made deposit to " + AccountType.Saving  + " account: " + depositAmount);
         amount = atm.viewAccount(AccountType.Saving);
         System.out.println("User " + accountName + " got amount from " + AccountType.Saving  + " account: " + amount);

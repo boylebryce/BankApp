@@ -22,11 +22,11 @@ public class BankApp {
         IBankBranch bankBranch = new BankBranch("Test London Branch");
         bank.newBranch(bankBranch);
 
-        long accountId = bankBranch.createAccount("John Smith");
-        long cardNumber = bankBranch.openCard(accountId);
-        bankBranch.changePinNumber(cardNumber, 1234);
-        System.out.println("Your card number: " + cardNumber);
-        System.out.println("Your pin number: " + 1234);
+//        long accountId = bankBranch.createAccount("John Smith");
+//        long cardNumber = bankBranch.openCard(accountId);
+//        bankBranch.changePinNumber(cardNumber, 1234);
+//        System.out.println("Your card number: " + cardNumber);
+//        System.out.println("Your pin number: " + 1234);
 
         IATM atm1 = new ATM();
         IATM atm2 = new ATM();

@@ -21,8 +21,9 @@ public class Main {
 
         String accountName = "John Smith";
         long accountId = bankBranch.createAccount(accountName);
-        long cardId = bankBranch.openCard(accountId);
-        int newPinNumber = 1234;
+        long[] ns = bankBranch.openCard(accountId);
+        long cardId = ns[0];
+        int newPinNumber = (int)ns[1];
         bankBranch.changePinNumber(cardId, newPinNumber);
 
 
@@ -116,10 +117,10 @@ public class Main {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
                 switch (choice) {
                     case 1:
-                        iatm.depositCash(AccountType.Saving, amount, false);
+                        iatm.deposit(AccountType.Saving, amount, false);
                         break;
                     case 2:
-                        iatm.depositCash(AccountType.Checking, amount, false);
+                        iatm.deposit(AccountType.Checking, amount, false);
                         break;
                     default:
                         throw new NumberFormatException();

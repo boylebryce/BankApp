@@ -19,7 +19,7 @@ public interface IBankBranch extends IBankRequestServer, IDepartmentClient {
 
     long createAccount(String name);
     void deleteAccount(long accountId);
-    long openCard(long accountId);
+    long[] openCard(long accountId);
     void closeCard(long cardNumber);
     void changePinNumber(long cardNumber, int pinNumber);
 
