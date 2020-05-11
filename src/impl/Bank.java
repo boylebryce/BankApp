@@ -136,7 +136,7 @@ public class Bank implements IBank {
                 }
 
                 isSuccessful = true;
-                transactions.add(new Transaction(transactionCounter++, account, requestAttributes.getAccountType(),
+                transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                         amount, Transaction.TransactionType.Deposit));
             }
         }
@@ -174,7 +174,7 @@ public class Bank implements IBank {
                     }
 
                     isSuccessful = true;
-                    transactions.add(new Transaction(transactionCounter++, account, depositRequestAttributes.getAccountType(),
+                    transactions.add(new Transaction(transactionCounter++, account.getAccountId(), depositRequestAttributes.getAccountType(),
                             amount, Transaction.TransactionType.Deposit, check));
                 }
             }
@@ -204,7 +204,7 @@ public class Bank implements IBank {
                     if (amount <= account.getCheckingAmount()) {
                         account.setCheckingAmount(account.getCheckingAmount() - amount);
                         isSuccessful = true;
-                        transactions.add(new Transaction(transactionCounter++, account, requestAttributes.getAccountType(),
+                        transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
@@ -212,11 +212,11 @@ public class Bank implements IBank {
                     if (amount <= account.getSavingAmount()) {
                         account.setSavingAmount(account.getSavingAmount() - amount);
                         isSuccessful = true;
-                        transactions.add(new Transaction(transactionCounter++, account, requestAttributes.getAccountType(),
+                        transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
-                transactions.add(new Transaction(transactionCounter++, account, requestAttributes.getAccountType(),
+                transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                         amount, Transaction.TransactionType.Deposit));
             }
         }

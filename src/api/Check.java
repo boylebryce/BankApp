@@ -2,6 +2,8 @@ package api;
 
 import java.util.Date;
 
+import static impl.StorageUtils.append;
+
 public class Check {
     private double amount;
     private long routingNumber;
@@ -70,6 +72,18 @@ public class Check {
         output += "/Account number: " + Long.toString(accountNumber);
         output += "/Check number: " + Long.toString(checkNumber);
         output += "/Date: " + checkDate.toString();
+
+        return output;
+    }
+
+    public String toDataString() {
+        String output = "";
+
+        output = append(output, String.valueOf(amount));
+        output = append(output, String.valueOf(routingNumber));
+        output = append(output, String.valueOf(accountNumber));
+        output = append(output, String.valueOf(checkNumber));
+        output = append(output, String.valueOf(checkDate.getTime()));
 
         return output;
     }

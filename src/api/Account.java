@@ -3,6 +3,8 @@ package api;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static impl.StorageUtils.append;
+
 public class Account {
     private final IBank bank;
     private final long accountId;
@@ -66,5 +68,31 @@ public class Account {
 
     public void removeCard(Card card) {
         cards.remove(card);
+    }
+
+    // Generate a CSV string for saving Account state to file
+    public String toDataString() {
+        String output = "";
+
+        output = append(output, String.valueOf(accountId));
+        output = append(output, name);
+        output = append(output, String.valueOf(savingAmount));
+        output = append(output, String.valueOf(checkingAmount));
+        output = append(output, String.valueOf(cards.size()));
+
+        for (Card card : cards) {
+            output = append(output, card.toDataString());
+        }
+
+        output = append(output, String.valueOf(transactions.size()));
+
+        for (Transaction transaction : transactions) {
+            output = append(output, transaction.toDataString());
+        }
+
+        output = append(output, String.valueOf(isLocked));
+
+        return output;
+
     }
 }
