@@ -8,6 +8,8 @@ import api.operations.response.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static impl.StorageUtils.addDelimiter;
+
 public class BankBranch implements IBankBranch {
     private final String name;
     private IBank bank;
@@ -19,6 +21,27 @@ public class BankBranch implements IBankBranch {
     public BankBranch(String name) {
         this.name = name;
         this.atms = new ArrayList<>();
+    }
+
+    public BankBranch(String input, int notUsed) {
+        this.atms = new ArrayList<>();
+
+        String[] data = input.split(",");
+
+        this.name = data[0];
+
+        int numATMs = Integer.parseInt(data[1]);
+        for (int i = 0; i < numATMs; ++i) {
+            String ATMData = "";
+            int offset = i * 4;
+
+            ATMData += addDelimiter(data[2 + offset]); // ID
+            ATMData += addDelimiter(data[3 + offset]); // Money level
+            ATMData += addDelimiter(data[4 + offset]); // Ink level
+            ATMData += addDelimiter(data[5 + offset]); // Paper level
+
+            atms.add(new ATM(ATMData));
+        }
     }
 
     @Override
@@ -149,5 +172,18 @@ public class BankBranch implements IBankBranch {
     @Override
     public BankResponse<MaintainATM, MaintainATMBankResponseAttributes> respondMaintainATM(BankRequest<MaintainATM, MaintainATMBankRequestAttributes> bankRequest) {
         return maintenance.respondMaintainATM(bankRequest);
+    }
+
+    public String toDataString() {
+        String output = "";
+
+        output += addDelimiter(name);
+        output += addDelimiter(String.valueOf(atms.size()));
+
+        for (IATM atm : atms) {
+            output += atm.toDataString();
+        }
+
+        return output;
     }
 }
