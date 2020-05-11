@@ -2,6 +2,8 @@ package api;
 
 import java.util.Date;
 
+import static impl.StorageUtils.addDelimiter;
+
 public class Check {
     private double amount;
     private long routingNumber;
@@ -70,6 +72,18 @@ public class Check {
         output += "/Account number: " + Long.toString(accountNumber);
         output += "/Check number: " + Long.toString(checkNumber);
         output += "/Date: " + checkDate.toString();
+
+        return output;
+    }
+
+    public String toDataString() {
+        String output = "";
+
+        output += addDelimiter(String.valueOf(amount));
+        output += addDelimiter(String.valueOf(routingNumber));
+        output += addDelimiter(String.valueOf(accountNumber));
+        output += addDelimiter(String.valueOf(checkNumber));
+        output += addDelimiter(String.valueOf(checkDate.getTime()));
 
         return output;
     }
