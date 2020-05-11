@@ -2,7 +2,7 @@ package api;
 
 import java.util.Date;
 
-import static impl.StorageUtils.append;
+import static impl.StorageUtils.addDelimiter;
 
 public class Transaction {
     private long transactionId;
@@ -37,19 +37,19 @@ public class Transaction {
     public String toDataString() {
         String output = "";
 
-        output = append(output, String.valueOf(transactionId));
-        output = append(output, String.valueOf(time.getTime()));
-        output = append(output, String.valueOf(accountID));
-        output = append(output, String.valueOf(accountType));
-        output = append(output, String.valueOf(amount));
-        output = append(output, String.valueOf(transactionType));
+        output += addDelimiter(String.valueOf(transactionId));
+        output += addDelimiter(String.valueOf(time.getTime()));
+        output += addDelimiter(String.valueOf(accountID));
+        output += addDelimiter(String.valueOf(accountType));
+        output += addDelimiter(String.valueOf(amount));
+        output += addDelimiter(String.valueOf(transactionType));
 
         if (check != null) {
-            output = append(output, "1");
-            output = append(output, check.toDataString());
+            output += addDelimiter("1");
+            output += addDelimiter(check.toDataString());
         }
         else {
-            output = append(output, "0");
+            output += addDelimiter("0");
         }
 
         return output;

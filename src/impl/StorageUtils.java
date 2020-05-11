@@ -1,18 +1,8 @@
 package impl;
 
-import api.Card;
-
-import java.util.Collection;
-
 public class StorageUtils {
-    public static String append(String output, String appendString) {
+    public static String addDelimiter(String input) {
         String delimiter = ",";
-
-        if (output.contains(delimiter)) {
-            return output + delimiter + appendString;
-        }
-        else {
-            return output + appendString;
-        }
+        return input + delimiter;
     }
 }

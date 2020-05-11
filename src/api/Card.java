@@ -1,6 +1,6 @@
 package api;
 
-import static impl.StorageUtils.append;
+import static impl.StorageUtils.addDelimiter;
 
 public class Card {
     private final long cardNumber;
@@ -30,8 +30,8 @@ public class Card {
     public String toDataString() {
         String output = "";
 
-        output = append(output, String.valueOf(cardNumber));
-        output = append(output, String.valueOf(pinNumber));
+        output += addDelimiter(String.valueOf(cardNumber));
+        output += addDelimiter(String.valueOf(pinNumber));
 
         return output;
     }
