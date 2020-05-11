@@ -22,8 +22,6 @@ public class AccountTest {
 
         Card card = new Card(1234567890, 1234);
         testAccount.addCard(card);
-
-
     }
 
     @After
@@ -103,6 +101,21 @@ public class AccountTest {
     @Test
     public void toDataString() {
         String[] data = testAccount.toDataString().split(",");
+        assertEquals("123456789", data[0]);
+        assertEquals("John Smith", data[1]);
+        assertEquals("543.21", data[2]);
+        assertEquals("123.45", data[3]);
+        assertEquals("1", data[4]);
+        assertEquals("1234567890", data[5]);
+        assertEquals("1234", data[6]);
+        assertEquals("0", data[7]);
+        assertEquals("false", data[8]);
+    }
+
+    @Test
+    public void testDataStringConstructor() {
+        Account newTestAccount = new Account(testAccount.toDataString());
+        String[] data = newTestAccount.toDataString().split(",");
         assertEquals("123456789", data[0]);
         assertEquals("John Smith", data[1]);
         assertEquals("543.21", data[2]);

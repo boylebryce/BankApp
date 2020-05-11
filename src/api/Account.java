@@ -1,9 +1,10 @@
 package api;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static impl.StorageUtils.append;
+import static impl.StorageUtils.addDelimiter;
 
 public class Account {
     private final IBank bank;
@@ -11,7 +12,7 @@ public class Account {
     private final String name;
     private double savingAmount;
     private double checkingAmount;
-    private final Collection<Card> cards;
+    private final ArrayList<Card> cards;
     private final Collection<Transaction> transactions;
     private boolean isLocked;
 
@@ -24,6 +25,40 @@ public class Account {
         this.cards = new ArrayList<>();
         this.transactions = new ArrayList<>();
         this.isLocked = false;
+    }
+
+    public Account(String input) {
+        this.cards = new ArrayList<>();
+        this.transactions = new ArrayList<>();
+
+        String[] data = input.split(",");
+
+        if (data.length < 7) {
+            throw new InvalidParameterException("Error parsing account");
+        }
+
+        this.bank = null;
+        this.accountId = Long.parseLong(data[0]);
+        this.name = data[1];
+        this.savingAmount = Double.parseDouble(data[2]);
+        this.checkingAmount = Double.parseDouble(data[3]);
+
+        int numCards = Integer.parseInt(data[4]);
+
+        for (int i = 0; i < numCards; ++i) {
+            int cardNumberOffset = 5 + (i * 2);
+            int cardPinOffset = 6 + (i * 2);
+
+            long cardNumber = Long.parseLong(data[cardNumberOffset]);
+            int pin = Integer.parseInt(data[cardPinOffset]);
+
+            cards.add(new Card(cardNumber, pin));
+        }
+
+        int i = 1 + (2 * numCards);
+
+        // Index i holds the transaction counter, which is always 0, so just skip it
+        this.isLocked = Boolean.parseBoolean(data[i + 1]);
     }
 
     public long getAccountId() {
@@ -42,7 +77,7 @@ public class Account {
         return checkingAmount;
     }
 
-    public Collection<Card> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
@@ -67,30 +102,35 @@ public class Account {
     }
 
     public void removeCard(Card card) {
-        cards.remove(card);
+        for (int i = 0; i < cards.size(); ++i) {
+            if (card.getCardNumber() == cards.get(i).getCardNumber()) {
+                cards.remove(i);
+                break;
+            }
+        }
     }
 
     // Generate a CSV string for saving Account state to file
     public String toDataString() {
         String output = "";
 
-        output = append(output, String.valueOf(accountId));
-        output = append(output, name);
-        output = append(output, String.valueOf(savingAmount));
-        output = append(output, String.valueOf(checkingAmount));
-        output = append(output, String.valueOf(cards.size()));
+        output += addDelimiter(String.valueOf(accountId));
+        output += addDelimiter(name);
+        output += addDelimiter(String.valueOf(savingAmount));
+        output += addDelimiter(String.valueOf(checkingAmount));
+        output += addDelimiter(String.valueOf(cards.size()));
 
         for (Card card : cards) {
-            output = append(output, card.toDataString());
+            output += card.toDataString();
         }
 
-        output = append(output, String.valueOf(transactions.size()));
+        output += addDelimiter(String.valueOf(transactions.size()));
 
         for (Transaction transaction : transactions) {
-            output = append(output, transaction.toDataString());
+            output += transaction.toDataString();
         }
 
-        output = append(output, String.valueOf(isLocked));
+        output += addDelimiter(String.valueOf(isLocked));
 
         return output;
 
