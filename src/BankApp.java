@@ -1,6 +1,7 @@
 import api.IATM;
 import api.IBank;
 import api.IBankBranch;
+import gui.CustomerDetailsGUI;
 import gui.MainGUI;
 import impl.ATM;
 import impl.Bank;
@@ -40,7 +41,7 @@ public class BankApp {
         atms.add(atm3);
         BankSystem system = new BankSystem(atms, Collections.singletonList(bankBranch));
 
-        MainGUI gui = new MainGUI(system);
+        CustomerDetailsGUI gui = new CustomerDetailsGUI(system);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gui.pack();
