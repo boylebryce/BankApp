@@ -107,27 +107,4 @@ public class BankBranchTest {
     @Test
     public void respondMaintainATM() {
     }
-
-    @Test
-    public void toDataString() {
-        String[] data = testBranch.toDataString().split(",");
-        assertEquals("Test Branch", data[0]);   // Branch name
-        assertEquals("1", data[1]);             // Number of ATMs
-        // data[2] is a randomly generated ATM ID
-        assertEquals("1000000.0", data[3]);     // ATM 1 cash level
-        assertEquals("2000", data[4]);          // ATM 1 ink level
-        assertEquals("2000", data[5]);          // ATM 1 paper level
-    }
-
-    @Test
-    public void testDataStringConstructor() {
-        BankBranch newTestBranch = new BankBranch(testBranch.toDataString());
-        String[] data = newTestBranch.toDataString().split(",");
-        assertEquals("Test Branch", data[0]);   // Branch name
-        assertEquals("1", data[1]);             // Number of ATMs
-        // data[2] is a randomly generated ATM ID
-        assertEquals("1000000.0", data[3]);     // ATM 1 cash level
-        assertEquals("2000", data[4]);          // ATM 1 ink level
-        assertEquals("2000", data[5]);          // ATM 1 paper level
-    }
 }

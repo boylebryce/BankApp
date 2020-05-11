@@ -23,27 +23,6 @@ public class BankBranch implements IBankBranch {
         this.atms = new ArrayList<>();
     }
 
-    public BankBranch(String input, int notUsed) {
-        this.atms = new ArrayList<>();
-
-        String[] data = input.split(",");
-
-        this.name = data[0];
-
-        int numATMs = Integer.parseInt(data[1]);
-        for (int i = 0; i < numATMs; ++i) {
-            String ATMData = "";
-            int offset = i * 4;
-
-            ATMData += addDelimiter(data[2 + offset]); // ID
-            ATMData += addDelimiter(data[3 + offset]); // Money level
-            ATMData += addDelimiter(data[4 + offset]); // Ink level
-            ATMData += addDelimiter(data[5 + offset]); // Paper level
-
-            atms.add(new ATM(ATMData));
-        }
-    }
-
     @Override
     public String getBranchName() {
         return name;
@@ -172,18 +151,5 @@ public class BankBranch implements IBankBranch {
     @Override
     public BankResponse<MaintainATM, MaintainATMBankResponseAttributes> respondMaintainATM(BankRequest<MaintainATM, MaintainATMBankRequestAttributes> bankRequest) {
         return maintenance.respondMaintainATM(bankRequest);
-    }
-
-    public String toDataString() {
-        String output = "";
-
-        output += addDelimiter(name);
-        output += addDelimiter(String.valueOf(atms.size()));
-
-        for (IATM atm : atms) {
-            output += atm.toDataString();
-        }
-
-        return output;
     }
 }
