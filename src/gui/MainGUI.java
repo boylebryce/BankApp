@@ -1,5 +1,6 @@
 package gui;
 
+import api.Customer;
 import api.IATM;
 import api.IBank;
 import api.IBankBranch;
@@ -18,9 +19,11 @@ public class MainGUI extends JFrame {
     private JTable bankBranchTable;
 
     private BankSystem bankSystem;
+    private Customer customer;	
 
-    public MainGUI(BankSystem bankSystem) {
+    public MainGUI(BankSystem bankSystem, Customer customer) {
         this.bankSystem = bankSystem;
+	this.customer = customer;
 
         setContentPane(mainPanel);
         setVisible(true);
