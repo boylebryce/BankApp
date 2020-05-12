@@ -106,6 +106,18 @@ public class AccountTest {
         assertEquals("1234", data[6]);
         assertEquals("0", data[7]);
         assertEquals("false", data[8]);
+
+        testAccount.setLocked(true);
+        data = testAccount.toDataString().split(",");
+        assertEquals("123456789", data[0]);
+        assertEquals("John Smith", data[1]);
+        assertEquals("543.21", data[2]);
+        assertEquals("123.45", data[3]);
+        assertEquals("1", data[4]);
+        assertEquals("1234567890", data[5]);
+        assertEquals("1234", data[6]);
+        assertEquals("0", data[7]);
+        assertEquals("true", data[8]);
     }
 
     @Test
@@ -121,5 +133,18 @@ public class AccountTest {
         assertEquals("1234", data[6]);
         assertEquals("0", data[7]);
         assertEquals("false", data[8]);
+
+        testAccount.setLocked(true);
+        newTestAccount = new Account(testAccount.toDataString());
+        data = newTestAccount.toDataString().split(",");
+        assertEquals("123456789", data[0]);
+        assertEquals("John Smith", data[1]);
+        assertEquals("543.21", data[2]);
+        assertEquals("123.45", data[3]);
+        assertEquals("1", data[4]);
+        assertEquals("1234567890", data[5]);
+        assertEquals("1234", data[6]);
+        assertEquals("0", data[7]);
+        assertEquals("true", data[8]);
     }
 }

@@ -50,6 +50,10 @@ public class ATM implements IATM {
         this.currentAccountId = -1;
     }
 
+    public boolean inSession() {
+        return currentAccountId != -1;
+    }
+
     @Override
     public long getId() {
         return id;
@@ -168,14 +172,22 @@ public class ATM implements IATM {
         WithdrawMoneyBankRequestAttributes requestAttributes = new WithdrawMoneyBankRequestAttributes(currentAccountId, amount, accountType);
         BankResponse<WithdrawMoney, WithdrawMoneyBankResponseAttributes> bankResponse = bankBranch.respondWithdrawMoney(new BankRequest<>(requestAttributes));
         WithdrawMoneyBankResponseAttributes responseAttributes = bankResponse.getBankResponseAttributes();
+
         if (!responseAttributes.isSuccessful()) {
             throw new IllegalArgumentException("Not enough money");
         }
+
+        if (amount > moneyLevel) {
+            throw new IllegalArgumentException("ATM does not have enough cash");
+        }
+
         moneyLevel -= amount;
+
         if (moneyLevel < atmMaintenancePolicy.getLowMoneyLevel()) {
             MaintainATMBankRequestAttributes maintainATMBankRequestAttributes = new MaintainATMBankRequestAttributes(this, MaintainATMBankRequestAttributes.MaintainRequestType.LowMoney);
             bankBranch.respondMaintainATM(new BankRequest<>(maintainATMBankRequestAttributes));
         }
+
         if (printReceipt) {
             printingReceipt();
         }
