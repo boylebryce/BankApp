@@ -469,7 +469,7 @@ public class Bank implements IBank {
         Account account = findAccountById(requestAttributes.getAccountId());
         if (account != null) {
             account.setLocked(true);
-
+            isSuccessful = true;
             saveAccountsToFile();
         }
 
