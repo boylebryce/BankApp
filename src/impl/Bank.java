@@ -15,7 +15,7 @@ public class Bank implements IBank {
     private static final Set<Long> CARD_NUMBERS = new HashSet<>();
     private static final Set<Long> ACCOUNT_IDS = new HashSet<>();
 
-    private final String name;
+    private String name;
     private final Collection<IBankBranch> branches;
     private final IFraud fraud;
     private final IMaintenance maintenance;
@@ -53,7 +53,7 @@ public class Bank implements IBank {
     }
 
     private void loadAccountsFromFile() {
-        String filename = "data/accounts.txt";
+        String filename = "data/" + this.name + "/accounts.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 
@@ -70,7 +70,7 @@ public class Bank implements IBank {
     }
 
     private void saveAccountsToFile() {
-        String filename = "data/accounts.txt";
+        String filename = "data/" + this.name + "/accounts.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("");
@@ -86,7 +86,7 @@ public class Bank implements IBank {
     }
 
     private void loadTransactionsFromFile() {
-        String filename = "data/transactions.txt";
+        String filename = "data/" + this.name + "/transactions.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 
@@ -102,7 +102,7 @@ public class Bank implements IBank {
     }
 
     private void saveTransactionsToFile() {
-        String filename = "data/transactions.txt";
+        String filename = "data/" + this.name + "/transactions.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("");
@@ -136,10 +136,7 @@ public class Bank implements IBank {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("");
 
-            System.out.println("Opened file " + filename);
-
             for (IBankBranch branch : branches) {
-                System.out.println("Writing " + branch.toDataString() + "to file");
                 writer.append(branch.toDataString()).append("\n");
             }
         } catch (IOException e) {
@@ -150,6 +147,10 @@ public class Bank implements IBank {
     private void saveAccountsAndTransactions() {
         saveAccountsToFile();
         saveTransactionsToFile();
+    }
+
+    public void setBankName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -325,8 +326,11 @@ public class Bank implements IBank {
         Account account = findAccountById(requestAttributes.getAccountId());
         boolean isSuccessful = false;
         double amount = requestAttributes.getAmount();
+        AccountType accountType = requestAttributes.getAccountType();
+
         if (account != null) {
             if (amount > 0) {
+
                 if (requestAttributes.getAccountType() == AccountType.Checking) {
                     if (amount <= account.getCheckingAmount()) {
                         account.setCheckingAmount(account.getCheckingAmount() - amount);
@@ -335,6 +339,7 @@ public class Bank implements IBank {
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
+
                 else {
                     if (amount <= account.getSavingAmount()) {
                         account.setSavingAmount(account.getSavingAmount() - amount);
@@ -343,8 +348,6 @@ public class Bank implements IBank {
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
-                transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
-                        amount, Transaction.TransactionType.Deposit));
 
                 saveAccountsAndTransactions();
             }
@@ -466,7 +469,7 @@ public class Bank implements IBank {
         Account account = findAccountById(requestAttributes.getAccountId());
         if (account != null) {
             account.setLocked(true);
-
+            isSuccessful = true;
             saveAccountsToFile();
         }
 

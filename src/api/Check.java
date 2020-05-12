@@ -31,7 +31,7 @@ public class Check {
         return routingNumber;
     }
 
-    public void setRoutingNumber(int routingNumber) {
+    public void setRoutingNumber(long routingNumber) {
         this.routingNumber = routingNumber;
     }
 
@@ -39,7 +39,7 @@ public class Check {
         return accountNumber;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    public void setAccountNumber(long accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -59,19 +59,12 @@ public class Check {
         this.checkDate = checkDate;
     }
 
-    public boolean sameIdentifiers(Check check) {
-        return (routingNumber == check.getRoutingNumber()
-                && accountNumber == check.getAccountNumber()
-                && checkNumber == check.getCheckNumber());
-    }
-
     public String toString() {
         String output = "";
 
-        output += "Routing number: " + routingNumber;
-        output += "/Account number: " + accountNumber;
-        output += "/Check number: " + checkNumber;
-        output += "/Date: " + checkDate.toString();
+        output += addDelimiter(String.valueOf(accountNumber));
+        output += addDelimiter(String.valueOf(routingNumber));
+        output += addDelimiter(String.valueOf(checkNumber));
 
         return output;
     }

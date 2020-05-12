@@ -55,7 +55,7 @@ public class Account {
             cards.add(new Card(cardNumber, pin));
         }
 
-        int i = 1 + (2 * numCards);
+        int i = 5 + (2 * numCards);
 
         // Index i holds the transaction counter, which is always 0, so just skip it
         this.isLocked = Boolean.parseBoolean(data[i + 1]);

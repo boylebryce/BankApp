@@ -70,7 +70,7 @@ public class Transaction {
 
         if (check != null) {
             output += addDelimiter("1");
-            output += addDelimiter(check.toDataString());
+            output += check.toDataString();
         }
         else {
             output += addDelimiter("0");

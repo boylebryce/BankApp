@@ -21,7 +21,7 @@ public class BankApp {
     }
 
     private static void createAndShowGUI() {
-        IBank bank = new Bank("Test Bank");
+        IBank bank = new Bank("SFH Bank");
 
         List<IBankBranch> bankBranches = bank.getBranches();
 
