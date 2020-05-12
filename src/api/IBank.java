@@ -1,6 +1,15 @@
 package api;
 
+import java.io.IOException;
+import java.util.List;
+
 public interface IBank extends IBankRequestServer, IDepartmentClient {
     String getBankName();
-    void newBranch(IBankBranch bankBranch);
+    void addBranch(IBankBranch bankBranch);
+
+    void saveBranchesToFile() throws IOException;
+
+    void loadBranchesFromFile() throws IOException;
+
+    List<IBankBranch> getBranches();
 }

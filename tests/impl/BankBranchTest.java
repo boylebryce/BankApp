@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class BankBranchTest {
     Bank testBank;
     BankBranch testBranch;
@@ -16,10 +14,10 @@ public class BankBranchTest {
     public void setUp() throws Exception {
         testBank = new Bank("Test Bank");
         testBranch = new BankBranch("Test Branch");
-        testBank.newBranch(testBranch);
+        testBank.addBranch(testBranch);
 
         testATM = new ATM();
-        testBranch.newATM(testATM);
+        testBranch.addATM(testATM);
 
         testAccountID = testBranch.createAccount("Test Name");
     }

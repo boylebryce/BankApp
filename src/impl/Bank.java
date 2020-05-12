@@ -6,6 +6,7 @@ import api.operations.request.*;
 import api.operations.response.*;
 import com.sun.tools.javac.Main;
 
+import java.io.*;
 import java.util.*;
 
 import static impl.StorageUtils.addDelimiter;
@@ -43,10 +44,11 @@ public class Bank implements IBank {
     }
 
     @Override
-    public void newBranch(IBankBranch bankBranch) {
+    public void addBranch(IBankBranch bankBranch) {
         bankBranch.setBank(this);
         bankBranch.setFraud(fraud);
         bankBranch.setMaintenance(maintenance);
+        branches.add(bankBranch);
     }
 
     @Override
@@ -366,5 +368,38 @@ public class Bank implements IBank {
             }
         }
         return null;
+    }
+
+    public void loadBranchesFromFile() throws IOException {
+        String filename = "data/branches/" + this.name + ".txt";
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+
+        String line = reader.readLine();
+        while (line != null) {
+            this.addBranch(new BankBranch(line));
+            line = reader.readLine();
+        }
+
+        reader.close();
+    }
+
+    @Override
+    public List<IBankBranch> getBranches() {
+        return (List<IBankBranch>) branches;
+    }
+
+    public void saveBranchesToFile() throws IOException {
+        String filename = "data/branches/" + this.name + ".txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("");
+
+        System.out.println("Opened file " + filename);
+
+        for (IBankBranch branch : branches) {
+            System.out.println("Writing " + branch.toDataString() + "to file");
+            writer.append(branch.toDataString() + "\n");
+        }
+
+        writer.close();
     }
 }

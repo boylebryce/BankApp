@@ -5,6 +5,8 @@ import api.operations.*;
 import api.operations.request.*;
 import api.operations.response.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +37,8 @@ public class ATM implements IATM {
         this.inkLevel = ATMMaintenancePolicy.MaxInkAmount;
     }
 
-    public ATM(String input) {
+    public ATM(String input, IBankBranch branch) {
+        this.bankBranch = branch;
         String[] data = input.split(",");
 
         this.id = Long.parseLong(data[0]);

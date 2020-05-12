@@ -7,6 +7,9 @@ import api.operations.request.MaintainATMBankRequestAttributes;
 import api.operations.response.AlertAccountBankResponseAttributes;
 import api.operations.response.MaintainATMBankResponseAttributes;
 
+import java.io.IOException;
+import java.util.List;
+
 public interface IBankBranch extends IBankRequestServer, IDepartmentClient {
     String getBranchName();
     IBank getBank();
@@ -15,7 +18,7 @@ public interface IBankBranch extends IBankRequestServer, IDepartmentClient {
     void setFraud(IFraud fraud);
     void setMaintenance(IMaintenance maintenance);
 
-    void newATM(IATM atm);
+    void addATM(IATM atm);
 
     long createAccount(String name);
     void deleteAccount(long accountId);
@@ -28,4 +31,12 @@ public interface IBankBranch extends IBankRequestServer, IDepartmentClient {
 
     BankResponse<MaintainATM, MaintainATMBankResponseAttributes>
     respondMaintainATM(BankRequest<MaintainATM, MaintainATMBankRequestAttributes> bankRequest);
+
+    void saveATMsToFile() throws IOException;
+
+    void loadATMsFromFile() throws IOException;
+
+    List<IATM> getATMs();
+
+    String toDataString();
 }

@@ -16,8 +16,8 @@ public class Main {
         IBankBranch bankBranch = new BankBranch(" London Test Bank");
         IATM atm = new ATM();
 
-        bank.newBranch(bankBranch);
-        bankBranch.newATM(atm);
+        bank.addBranch(bankBranch);
+        bankBranch.addATM(atm);
 
         String accountName = "John Smith";
         long accountId = bankBranch.createAccount(accountName);

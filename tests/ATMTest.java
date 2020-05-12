@@ -17,10 +17,10 @@ public class ATMTest {
     public void setUp() throws Exception {
         testBank = new Bank("Test Bank");
         testBranch = new BankBranch("Test Branch");
-        testBank.newBranch(testBranch);
+        testBank.addBranch(testBranch);
 
         testATM = new ATM();
-        testBranch.newATM(testATM);
+        testBranch.addATM(testATM);
 
         testAccountID = testBranch.createAccount("Test Name");
     }
@@ -100,7 +100,7 @@ public class ATMTest {
 
     @Test
     public void testDataStringConstructor() {
-        ATM newTestATM = new ATM(testATM.toDataString());
+        ATM newTestATM = new ATM(testATM.toDataString(), testBranch);
         String[] data = newTestATM.toDataString().split(",");
         assertEquals(testATM.getId(), Long.parseLong(data[0]));
         assertEquals(1000000, Double.parseDouble(data[1]), .001);

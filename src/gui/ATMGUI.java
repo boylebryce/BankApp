@@ -155,6 +155,10 @@ public class ATMGUI extends JFrame {
         try {
             atm.authenticateCustomer(cardNumber, pinNumber);
         }
+        catch (NullPointerException e) {
+            atmScreenTextArea.setText(e.getMessage());
+            return;
+        }
         catch (IllegalArgumentException e) {
             atmScreenTextArea.setText(e.getMessage());
             return;
