@@ -67,18 +67,11 @@ public class Fraud implements IFraud {
         // If check with same identifiers has been deposited before, it is invalid
         if (depositedChecks.contains(check.toString())) {
             valid = false;
-
-            Debug.print("Inside Fraud deposited before check");
         }
 
         // If check is "stale dated" - more than 6 months past check writing date, it is invalid
         else if (check.getCheckDate().compareTo(staleDate) < 0) {
             valid = false;
-
-            Debug.print("Inside Fraud date check:");
-            Debug.print("check.getCheckDate(): " + check.getCheckDate().toString());
-            Debug.print("staleDate: " + staleDate.toString());
-            Debug.print("check.getCheckDate().compareTo(staleDate): " + Integer.toString(check.getCheckDate().compareTo(staleDate)));
         }
 
         // Else check must be valid, add to depositedChecks set
