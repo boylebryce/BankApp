@@ -325,8 +325,11 @@ public class Bank implements IBank {
         Account account = findAccountById(requestAttributes.getAccountId());
         boolean isSuccessful = false;
         double amount = requestAttributes.getAmount();
+        AccountType accountType = requestAttributes.getAccountType();
+
         if (account != null) {
             if (amount > 0) {
+
                 if (requestAttributes.getAccountType() == AccountType.Checking) {
                     if (amount <= account.getCheckingAmount()) {
                         account.setCheckingAmount(account.getCheckingAmount() - amount);
@@ -335,6 +338,7 @@ public class Bank implements IBank {
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
+
                 else {
                     if (amount <= account.getSavingAmount()) {
                         account.setSavingAmount(account.getSavingAmount() - amount);
@@ -343,8 +347,6 @@ public class Bank implements IBank {
                                 amount, Transaction.TransactionType.Withdraw));
                     }
                 }
-                transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
-                        amount, Transaction.TransactionType.Deposit));
 
                 saveAccountsAndTransactions();
             }
