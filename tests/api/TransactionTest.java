@@ -1,3 +1,5 @@
+package api;
+
 import api.AccountType;
 import api.Transaction;
 import org.junit.After;
