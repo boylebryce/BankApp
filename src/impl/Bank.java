@@ -38,6 +38,14 @@ public class Bank implements IBank {
         this.accounts = new ArrayList<>();
         loadAccountsFromFile();
 
+        for (Account account : accounts) {
+            ACCOUNT_IDS.add(account.getAccountId());
+
+            for (Card card : account.getCards()) {
+                CARD_NUMBERS.add(card.getCardNumber());
+            }
+        }
+
         this.transactions = new ArrayList<>();
         loadTransactionsFromFile();
 
