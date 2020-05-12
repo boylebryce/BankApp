@@ -4,8 +4,12 @@ import api.*;
 import api.operations.*;
 import api.operations.request.*;
 import api.operations.response.*;
+import com.sun.tools.javac.Main;
 
+import java.io.*;
 import java.util.*;
+
+import static impl.StorageUtils.addDelimiter;
 
 public class Bank implements IBank {
     private static final Set<Long> CARD_NUMBERS = new HashSet<>();
@@ -24,14 +28,120 @@ public class Bank implements IBank {
 
     public Bank(String name) {
         this.name = name;
-        this.branches = new ArrayList<>();
         this.fraud = new Fraud(this);
         ATMMaintenancePolicy atmMaintenancePolicy = new ATMMaintenancePolicy();
         this.maintenance = new Maintenance(atmMaintenancePolicy);
-        this.accounts = new ArrayList<>();
-        this.transactions = new ArrayList<>();
 
-        this.transactionCounter = 0;
+        this.branches = new ArrayList<>();
+        loadBranchesFromFile();
+
+        this.accounts = new ArrayList<>();
+        loadAccountsFromFile();
+
+        this.transactions = new ArrayList<>();
+        loadTransactionsFromFile();
+
+        this.transactionCounter = transactions.size();
+    }
+
+    private void loadAccountsFromFile() {
+        String filename = "data/accounts.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+            String line = reader.readLine();
+            while (line != null) {
+                Account account = new Account(line);
+                accounts.add(account);
+                line = reader.readLine();
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Error loading accounts from file: " + e.getMessage());
+        }
+    }
+
+    private void saveAccountsToFile() {
+        String filename = "data/accounts.txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write("");
+
+            for (Account account : accounts) {
+                writer.append(account.toDataString()).append("\n");
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Error saving accounts to file: " + e.getMessage());
+        }
+
+    }
+
+    private void loadTransactionsFromFile() {
+        String filename = "data/transactions.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+            String line = reader.readLine();
+            while (line != null) {
+                Transaction transaction = new Transaction(line);
+                transactions.add(transaction);
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading transactions from file: " + e.getMessage());
+        }
+    }
+
+    private void saveTransactionsToFile() {
+        String filename = "data/transactions.txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write("");
+
+            for (Transaction transaction : transactions) {
+                writer.append(transaction.toDataString()).append("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving transactions to file: " + e.getMessage());
+        }
+    }
+
+    private void loadBranchesFromFile() {
+        String filename = "data/branches/" + this.name + ".txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+            String line = reader.readLine();
+            while (line != null) {
+                this.addBranch(new BankBranch(line));
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading branches from file: " + e.getMessage());
+        }
+    }
+
+    private void saveBranchesToFile() {
+        String filename = "data/branches/" + this.name + ".txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write("");
+
+            System.out.println("Opened file " + filename);
+
+            for (IBankBranch branch : branches) {
+                System.out.println("Writing " + branch.toDataString() + "to file");
+                writer.append(branch.toDataString()).append("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving branches to file: " + e.getMessage());
+        }
+    }
+
+    private void saveAccountsAndTransactions() {
+        saveAccountsToFile();
+        saveTransactionsToFile();
     }
 
     @Override
@@ -40,10 +150,13 @@ public class Bank implements IBank {
     }
 
     @Override
-    public void newBranch(IBankBranch bankBranch) {
+    public void addBranch(IBankBranch bankBranch) {
         bankBranch.setBank(this);
         bankBranch.setFraud(fraud);
         bankBranch.setMaintenance(maintenance);
+        branches.add(bankBranch);
+
+        saveBranchesToFile();
     }
 
     @Override
@@ -138,6 +251,8 @@ public class Bank implements IBank {
                 isSuccessful = true;
                 transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                         amount, Transaction.TransactionType.Deposit));
+
+                saveAccountsAndTransactions();
             }
         }
 
@@ -176,6 +291,8 @@ public class Bank implements IBank {
                     isSuccessful = true;
                     transactions.add(new Transaction(transactionCounter++, account.getAccountId(), depositRequestAttributes.getAccountType(),
                             amount, Transaction.TransactionType.Deposit, check));
+
+                    saveAccountsAndTransactions();
                 }
             }
         }
@@ -184,6 +301,8 @@ public class Bank implements IBank {
         else {
             AlertAccountBankRequestAttributes alertRequestAttributes = new AlertAccountBankRequestAttributes(accountId);
             BankResponse<AlertAccount, AlertAccountBankResponseAttributes> alertResponse = fraud.respondAlertAccount(new BankRequest<>(alertRequestAttributes));
+
+            saveAccountsToFile();
         }
 
         DepositCheckBankResponseAttributes responseAttributes = new DepositCheckBankResponseAttributes(isSuccessful);
@@ -218,6 +337,8 @@ public class Bank implements IBank {
                 }
                 transactions.add(new Transaction(transactionCounter++, account.getAccountId(), requestAttributes.getAccountType(),
                         amount, Transaction.TransactionType.Deposit));
+
+                saveAccountsAndTransactions();
             }
         }
 
@@ -234,6 +355,8 @@ public class Bank implements IBank {
         Account account = new Account(this, accountId, requestAttributes.getName());
         accounts.add(account);
 
+        saveAccountsToFile();
+
         CreateAccountBankResponseAttributes responseAttributes
                 = new CreateAccountBankResponseAttributes(true, accountId);
         return new BankResponse<>(responseAttributes);
@@ -249,6 +372,8 @@ public class Bank implements IBank {
         if (account != null) {
             accounts.remove(account);
             isSuccessful = true;
+
+            saveAccountsToFile();
         }
 
         DeleteAccountBankResponseAttributes responseAttributes
@@ -269,6 +394,8 @@ public class Bank implements IBank {
             pinNumber = (int)IDUtils.generateID(new HashSet<>(), 4, true);
             account.addCard(new Card(cardNumber, pinNumber));
             isSuccessful = true;
+
+            saveAccountsToFile();
         }
 
         OpenCardBankResponseAttributes responseAttributes
@@ -287,6 +414,8 @@ public class Bank implements IBank {
         if ((account != null) && (card != null)) {
             account.getCards().remove(card);
             isSuccessful = true;
+
+            saveAccountsToFile();
         }
 
         CloseCardBankResponseAttributes responseAttributes
@@ -295,7 +424,8 @@ public class Bank implements IBank {
     }
 
     @Override
-    public BankResponse<ChangePinNumber, ChangePinNumberBankResponseAttributes> respondChangePinNumber(BankRequest<ChangePinNumber, ChangePinNumberBankRequestAttributes> bankRequest) {
+    public BankResponse<ChangePinNumber, ChangePinNumberBankResponseAttributes>
+    respondChangePinNumber(BankRequest<ChangePinNumber, ChangePinNumberBankRequestAttributes> bankRequest) {
         ChangePinNumberBankRequestAttributes requestAttributes = bankRequest.getBankRequestAttributes();
         boolean isSuccessful = false;
         ChangePinNumberBankResponseAttributes.ChangePinFailReason changePinFailReason = null;
@@ -303,6 +433,8 @@ public class Bank implements IBank {
         if (card != null) {
             if (card.setPinNumber(requestAttributes.getPinNumber())) {
                 isSuccessful = true;
+
+                saveAccountsToFile();
             }
             else {
                 changePinFailReason = ChangePinNumberBankResponseAttributes.ChangePinFailReason.SamePinNumber;
@@ -326,6 +458,8 @@ public class Bank implements IBank {
         Account account = findAccountById(requestAttributes.getAccountId());
         if (account != null) {
             account.setLocked(true);
+
+            saveAccountsToFile();
         }
 
         LockAccountBankResponseAttributes responseAttributes
@@ -363,5 +497,10 @@ public class Bank implements IBank {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<IBankBranch> getBranches() {
+        return (List<IBankBranch>) branches;
     }
 }

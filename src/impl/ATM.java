@@ -5,8 +5,12 @@ import api.operations.*;
 import api.operations.request.*;
 import api.operations.response.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import static impl.StorageUtils.addDelimiter;
 
 public class ATM implements IATM {
     private static final Set<Long> ATM_IDS = new HashSet<>();
@@ -31,6 +35,19 @@ public class ATM implements IATM {
         this.moneyLevel = ATMMaintenancePolicy.MaxMoneyAmount;
         this.paperLevel = ATMMaintenancePolicy.MaxPaperAmount;
         this.inkLevel = ATMMaintenancePolicy.MaxInkAmount;
+    }
+
+    public ATM(String input, IBankBranch branch) {
+        this.bankBranch = branch;
+        String[] data = input.split(",");
+
+        this.id = Long.parseLong(data[0]);
+        this.moneyLevel = Double.parseDouble(data[1]);
+        this.inkLevel = Integer.parseInt(data[2]);
+        this.paperLevel = Integer.parseInt(data[3]);
+
+        this.state = ATMState.Idle;
+        this.currentAccountId = -1;
     }
 
     @Override
@@ -181,6 +198,17 @@ public class ATM implements IATM {
             MaintainATMBankRequestAttributes requestAttributes = new MaintainATMBankRequestAttributes(this, MaintainATMBankRequestAttributes.MaintainRequestType.LowPaper);
             bankBranch.respondMaintainATM(new BankRequest<>(requestAttributes));
         }
+    }
+
+    public String toDataString() {
+        String output = "";
+
+        output += addDelimiter(String.valueOf(id));
+        output += addDelimiter(String.valueOf(moneyLevel));
+        output += addDelimiter(String.valueOf(inkLevel));
+        output += addDelimiter(String.valueOf(paperLevel));
+
+        return output;
     }
 
     enum ATMState {

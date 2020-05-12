@@ -18,8 +18,8 @@ public class BankTest {
        bankBranch = new BankBranch(" London Test Bank");
        atm = new ATM();
 
-       bank.newBranch(bankBranch);
-       bankBranch.newATM(atm);
+       bank.addBranch(bankBranch);
+       bankBranch.addATM(atm);
     }
 
     @Test

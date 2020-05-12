@@ -23,4 +23,5 @@ public interface IATM {
     void withdraw(AccountType accountType, double amount, boolean printReceipt);
     void quit();
 
+    String toDataString();
 }

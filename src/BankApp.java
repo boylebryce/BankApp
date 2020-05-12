@@ -9,7 +9,9 @@ import impl.BankBranch;
 import impl.BankSystem;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,26 +22,28 @@ public class BankApp {
 
     private static void createAndShowGUI() {
         IBank bank = new Bank("Test Bank");
-        IBankBranch bankBranch = new BankBranch("Test London Branch");
-        bank.newBranch(bankBranch);
 
-//        long accountId = bankBranch.createAccount("John Smith");
-//        long cardNumber = bankBranch.openCard(accountId);
-//        bankBranch.changePinNumber(cardNumber, 1234);
-//        System.out.println("Your card number: " + cardNumber);
-//        System.out.println("Your pin number: " + 1234);
+        List<IBankBranch> bankBranches = bank.getBranches();
 
-        IATM atm1 = new ATM();
-        IATM atm2 = new ATM();
-        IATM atm3 = new ATM();
-        bankBranch.newATM(atm1);
-        bankBranch.newATM(atm2);
-        bankBranch.newATM(atm3);
+        for (IBankBranch branch : bankBranches) {
+            branch.setBank(bank);
+        }
+
         List<IATM> atms = new ArrayList<>();
-        atms.add(atm1);
-        atms.add(atm2);
-        atms.add(atm3);
-        BankSystem system = new BankSystem(atms, Collections.singletonList(bankBranch));
+
+        for (IBankBranch branch : bankBranches) {
+
+            try {
+
+                branch.loadATMsFromFile();
+                atms.addAll(branch.getATMs());
+
+            } catch (IOException e) {
+                System.out.println("Error loading ATMs from file: " + e.getMessage());
+            }
+        }
+
+        BankSystem system = new BankSystem(atms, bankBranches);
 
         CustomerDetailsGUI gui = new CustomerDetailsGUI(system);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

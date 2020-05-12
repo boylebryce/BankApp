@@ -5,8 +5,11 @@ import api.operations.*;
 import api.operations.request.*;
 import api.operations.response.*;
 
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+
+import static impl.StorageUtils.addDelimiter;
 
 public class BankBranch implements IBankBranch {
     private final String name;
@@ -14,11 +17,15 @@ public class BankBranch implements IBankBranch {
     private IFraud fraud;
     private IMaintenance maintenance;
 
-    private final Collection<IATM> atms;
+    private final List<IATM> atms;
 
     public BankBranch(String name) {
         this.name = name;
         this.atms = new ArrayList<>();
+    }
+
+    public List<IATM> getATMs() {
+        return atms;
     }
 
     @Override
@@ -47,7 +54,7 @@ public class BankBranch implements IBankBranch {
     }
 
     @Override
-    public void newATM(IATM atm) {
+    public void addATM(IATM atm) {
         atms.add(atm);
         atm.setBankBranch(this);
         atm.setATMMaintenancePolicy(maintenance.getATMMaintenancePolicy());
@@ -149,5 +156,34 @@ public class BankBranch implements IBankBranch {
     @Override
     public BankResponse<MaintainATM, MaintainATMBankResponseAttributes> respondMaintainATM(BankRequest<MaintainATM, MaintainATMBankRequestAttributes> bankRequest) {
         return maintenance.respondMaintainATM(bankRequest);
+    }
+
+    public void loadATMsFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("data/atms/" + this.name + ".txt"));
+
+        String line = reader.readLine();
+        while (line != null) {
+            this.addATM(new ATM(line, this));
+            line = reader.readLine();
+        }
+
+
+        reader.close();
+    }
+
+    public void saveATMsToFile() throws IOException {
+        String filename = "data/atms/" + this.name + ".txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("");
+
+        for (IATM atm : atms) {
+            writer.append(atm.toDataString() + "\n");
+        }
+
+        writer.close();
+    }
+
+    public String toDataString() {
+        return name;
     }
 }
