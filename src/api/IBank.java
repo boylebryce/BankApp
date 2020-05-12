@@ -7,9 +7,5 @@ public interface IBank extends IBankRequestServer, IDepartmentClient {
     String getBankName();
     void addBranch(IBankBranch bankBranch);
 
-    void saveBranchesToFile() throws IOException;
-
-    void loadBranchesFromFile() throws IOException;
-
     List<IBankBranch> getBranches();
 }

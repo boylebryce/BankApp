@@ -68,9 +68,9 @@ public class Check {
     public String toString() {
         String output = "";
 
-        output += "Routing number: " + Long.toString(routingNumber);
-        output += "/Account number: " + Long.toString(accountNumber);
-        output += "/Check number: " + Long.toString(checkNumber);
+        output += "Routing number: " + routingNumber;
+        output += "/Account number: " + accountNumber;
+        output += "/Check number: " + checkNumber;
         output += "/Date: " + checkDate.toString();
 
         return output;

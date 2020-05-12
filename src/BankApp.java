@@ -22,15 +22,6 @@ public class BankApp {
 
     private static void createAndShowGUI() {
         IBank bank = new Bank("Test Bank");
-//        IBankBranch bankBranch = new BankBranch("Test London Branch");
-//        bank.newBranch(bankBranch);
-
-        // Load Bank's branches from file
-        try {
-            bank.loadBranchesFromFile();
-        } catch (IOException e) {
-            System.out.println("Error loading branches from file: " + e.getMessage());
-        }
 
         List<IBankBranch> bankBranches = bank.getBranches();
 
@@ -38,29 +29,14 @@ public class BankApp {
             branch.setBank(bank);
         }
 
-//        try {
-//            bank.saveBranchesToFile();
-//        }
-//        catch (IOException e) {
-//            System.out.println("Error loading branches from file: " + e.getMessage());
-//        }
-
-
-//        long accountId = bankBranch.createAccount("John Smith");
-//        long cardNumber = bankBranch.openCard(accountId);
-//        bankBranch.changePinNumber(cardNumber, 1234);
-//        System.out.println("Your card number: " + cardNumber);
-//        System.out.println("Your pin number: " + 1234);
-
         List<IATM> atms = new ArrayList<>();
 
         for (IBankBranch branch : bankBranches) {
-            try {
-                branch.loadATMsFromFile();
 
-                for (IATM atm : branch.getATMs()) {
-                    atms.add(atm);
-                }
+            try {
+
+                branch.loadATMsFromFile();
+                atms.addAll(branch.getATMs());
 
             } catch (IOException e) {
                 System.out.println("Error loading ATMs from file: " + e.getMessage());
