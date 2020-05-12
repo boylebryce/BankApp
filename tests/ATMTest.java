@@ -25,10 +25,6 @@ public class ATMTest {
         testAccountID = testBranch.createAccount("Test Name");
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void getId() {
     }

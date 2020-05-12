@@ -23,10 +23,6 @@ public class AccountTest {
         testAccount.addCard(card);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void getAccountId() {
         assertEquals(123456789, testAccount.getAccountId());
