@@ -59,6 +59,16 @@ public class Check {
         this.checkDate = checkDate;
     }
 
+    public String toString() {
+        String output = "";
+
+        output += addDelimiter(String.valueOf(accountNumber));
+        output += addDelimiter(String.valueOf(routingNumber));
+        output += addDelimiter(String.valueOf(checkNumber));
+
+        return output;
+    }
+
     public String toDataString() {
         String output = "";
 
